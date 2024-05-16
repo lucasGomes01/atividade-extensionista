@@ -3,7 +3,7 @@ import Logo from '../assets/Logo.png';
 
 import { depoimentos } from "../utils/mock";
 import { Title } from "../components/Title";
-import { Buscar } from "../components/Buscar";
+import { Buscar } from "../components/Busca";
 
 export default function Principal(){
   return (
