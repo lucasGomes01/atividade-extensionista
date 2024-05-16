@@ -17,8 +17,7 @@ export default function Perfil() {
                 <Divider mt={5} />
 
                 <Title color={"blue.500"} mb={1}>Histórico médico</Title>
-                <Text>Bronquite</Text>
-                <Text>Sinusite</Text>
+                <Text color={"gray.500"}>Não encontrado</Text>
             </VStack>
         </ScrollView>
     )
