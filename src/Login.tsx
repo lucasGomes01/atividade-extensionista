@@ -7,10 +7,9 @@ import { Title } from './components/Title';
 import { Botao } from './components/Botao';
 import { EntradaTexto } from './components/EntradaTexto';
 
-export default function Login({ navigation}) {
+export default function Login({navigation}) {
   return (
     <VStack flex={1} alignItems="center" justifyContent={'center'} p={5}>
-      <Image source={Logo} alt="Logo Voll" />
       <Title>
         Faça login em sua conta
       </Title>
@@ -25,7 +24,7 @@ export default function Login({ navigation}) {
         />
       </Box>
 
-      <Botao onPress={() => navigation.navigate('Tabs')}>Entrar</Botao>
+      <Botao onPress={() => navigation.navigate('Cadastros')}>Entrar</Botao>
 
       <Link href='' mt={2}>
         Esqueceu sua senha?

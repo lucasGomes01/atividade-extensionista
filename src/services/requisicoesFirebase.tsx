@@ -44,7 +44,7 @@ export async function createUser(email: string, senha: string): Promise<CreateUs
     }
 }
 
-export async function loginUser(email, senha): Promise<boolean> {
+export async function loginUser(email: string, senha: string): Promise<boolean> {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, senha);
         console.log("login");
