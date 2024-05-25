@@ -1,5 +1,5 @@
 import { db } from '../config/firebaseConfig';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export async function salvarComercio(data: any) {
     try {
@@ -9,4 +9,10 @@ export async function salvarComercio(data: any) {
         console.log(error);
         return false;
     }
+}
+
+export async function listarComercios() {
+    const querySnapshot = await getDocs(collection(db, "comercios"));
+    const comercios = querySnapshot.docs.map((doc) => doc.data());
+    return comercios;
 }
