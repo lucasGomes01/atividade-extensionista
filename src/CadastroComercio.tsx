@@ -3,26 +3,27 @@ import { Title } from './components/Title';
 import { Botao } from './components/Botao';
 import { EntradaTexto } from './components/EntradaTexto';
 import { formCadastro } from './utils/formCadastro';
-import { createUser } from './services/requisicoesFirebase';
-//import { useEffect } from 'react';
+import React, { useState } from 'react';
 
-//import { doc, setDoc } from "firebase/firestore";
-//import { db } from './config/firebaseConfig';
+import { salvarComercio } from './services/firestore';
 
-export default function CadastroComercio() {
-  // useEffect(() => {
-  //   async function addCity() {
-  //     await setDoc(doc(db, "cities", "LA"), {
-  //       name: "Los Angeles",
-  //       state: "CA",
-  //       country: "USA"
-  //     });
-  //   }
-  // }, []);
+export default function CadastroComercio({ navigation }) {
+  var data = {};
 
-  async function cadastrarUsuario() {
-    const result = await createUser("teste152tr33i1dt358r@gmail.com", "teste1");
-    console.log(result);
+  function setValue(texto: string, campo: string) {
+    data[campo] = texto;
+  }
+
+  async function cadastrarComercio() {
+    const result = await salvarComercio(data);
+    
+    if (result === 'ok') {
+      console.log('Comercio cadastrado com sucesso');
+
+      navigation.goBack();
+    } else {
+      console.log('Erro ao cadastrar comercio');
+    }
   }
 
   return (
@@ -33,12 +34,17 @@ export default function CadastroComercio() {
       <Box>
         {
           formCadastro[1].entradaTexto.map((entrada) => {
-            return <EntradaTexto label={entrada.label} placeholder={entrada.placeholder} key={entrada.id} />
+            return <EntradaTexto 
+                label={entrada.label} 
+                placeholder={entrada.placeholder} 
+                key={entrada.id}
+                onChangeText={texto => setValue(texto, entrada.value)}
+              />
           })
         }
       </Box>
 
-      <Botao onPress={() => cadastrarUsuario()} bgColor={"blue.800"} mt={4}>Cadastrar</Botao>
+      <Botao onPress={() => cadastrarComercio()} bgColor={"blue.800"} mt={4}>Cadastrar</Botao>
     </ScrollView>
   );
 }

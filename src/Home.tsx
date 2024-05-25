@@ -1,6 +1,7 @@
 import { VStack } from "native-base";
 import { Title } from "./components/Title";
 import { Botao } from "./components/Botao";
+import { BotaoCadastro } from "./components/BotaoCadastro";
 
 export default function Home({ navigation }) {
     return (
@@ -8,7 +9,7 @@ export default function Home({ navigation }) {
             <Title>
                 Home
             </Title>
-            <Botao onPress={() => navigation.navigate('Cadastros')}>Cadastros</Botao>
+            <BotaoCadastro onPress={() => {navigation.navigate('Cadastros')}} />
         </VStack>
     )
 }

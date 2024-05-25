@@ -3,7 +3,7 @@ import { Title } from './components/Title';
 import { Botao } from './components/Botao';
 import { EntradaTexto } from './components/EntradaTexto';
 import { formCadastro } from './utils/formCadastro';
-import { createUser } from './services/requisicoesFirebase';
+import { createUser } from './services/auth';
 
 export default function Cadastro() {
   async function cadastrarUsuario() {
