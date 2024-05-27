@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-//import Principal from "./Principal";
+import Usuarios from "./usuarios/Usuarios";
 import Comercios from "./comercios/Comercios";
 
 const Tab = createMaterialTopTabNavigator();
@@ -16,7 +16,7 @@ const screenOptions = {
 const tabs = [
     {
         name: "Administradores",
-        component: Comercios
+        component: Usuarios
     },
     {
         name: "Comércios",
@@ -38,6 +38,5 @@ export default function Tabs() {
         ))
         }       
         </Tab.Navigator>
-
     )
 }

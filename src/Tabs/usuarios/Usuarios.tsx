@@ -1,15 +1,15 @@
 import { VStack, ScrollView, Button } from "native-base";
 import { useEffect, useState } from "react";
-import { retornarListaComercios } from "../../services/firestore";
+import { retornarListaUsuarios } from "../../services/firestore";
 import { CardListagem } from "../../components/CardListagem";
 
-export default function Comercios({ navigation }) {
-    const [comercios, setComercios] = useState([]);
+export default function Usuarios({ navigation }) {
+    const [usuarios, setUsuarios] = useState([]);
 
     useEffect(() => {
         async function listarDadosComericios() {
-            const comercios = await retornarListaComercios();
-            setComercios(comercios);
+            const usuarios = await retornarListaUsuarios();
+            setUsuarios(usuarios);
         }
 
         listarDadosComericios();
@@ -18,15 +18,15 @@ export default function Comercios({ navigation }) {
     return (
         <ScrollView flex={1} bgColor="white">
             <VStack flex={1} alignItems="flex-end" p={5}>
-                <Button onPress={() => navigation.navigate('CadastroComercio')}>Adicionar</Button>
+                <Button onPress={() => navigation.navigate('CadastroUsuario')}>Adicionar</Button>
                 <ScrollView w="100%" >
                     {
-                        comercios.map((comercio) => {
+                        usuarios.map((usuario) => {
                             return <CardListagem
-                                key={comercio.id}
-                                nome={comercio.nome}
-                                foto={comercio.foto}
-                                data={comercio.data}
+                                key={usuario.id}
+                                nome={usuario.nome}
+                                foto={usuario.foto}
+                                data={usuario.data}
                             />
                         })
                     }

@@ -3,7 +3,7 @@ import { Title } from '../../components/Title';
 import { Botao } from '../../components/Botao';
 import { EntradaTexto } from '../../components/EntradaTexto';
 import { formCadastro } from '../../utils/formCadastro';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { salvarComercio } from '../../services/firestore';
 import { Alerta } from '../../components/Alerta';
@@ -11,15 +11,21 @@ import { Alerta } from '../../components/Alerta';
 export default function CadastroComercio({ navigation }) {
   const [statusError, setStatusError] = useState(false);
   const [mensagem, setMensagem] = useState('')
+  const [data, setData] = useState({});
 
-  const data = {};
-
-  formCadastro[1].entradaTexto.forEach((entrada) => {
-    data[entrada.value] = '';
-  });
+  useEffect(() => {
+    const initialData = {};
+    formCadastro[1].entradaTexto.forEach((entrada) => {
+      initialData[entrada.value] = '';
+    });
+    setData(initialData);
+  }, []);
 
   function setValue(texto: string, campo: string) {
-    data[campo] = texto;
+    setData(prevData => ({
+      ...prevData,
+      [campo]: texto
+    }));
   }
 
   async function cadastrarComercio() {
