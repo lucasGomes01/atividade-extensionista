@@ -7,11 +7,11 @@ import { NavigationAction, NavigationContainer } from "@react-navigation/native"
 const Tab = createNativeStackNavigator();
 
 import Cadastros from "./Cadastros";
-import CadastroComercio from "./CadastroComercio";
-import CadastroUsuario from "./CadastroUsuario";
+import CadastroComercio from "./Tabs/comercios/CadastroComercio";
+import CadastroUsuario from "./Tabs/usuarios/CadastroUsuario";
 import Home from "./Home";
 import Login from "./Login";
-import { Box } from "native-base";
+import Tabs from "./Tabs/Index";
 
 const styles = StyleSheet.create({
     header: {
@@ -51,6 +51,7 @@ export default function Rotas() {
                 <Tab.Screen name="Cadastros" component={Cadastros} options={options} />
                 <Tab.Screen name="CadastroUsuario" component={CadastroUsuario} options={options} />
                 <Tab.Screen name="CadastroComercio" component={CadastroComercio} options={options} />
+                <Tab.Screen name="Tabs" component={Tabs} options={options} />
             </Tab.Navigator>
         </NavigationContainer>
     );

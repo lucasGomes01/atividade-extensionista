@@ -12,7 +12,18 @@ export async function salvarComercio(data: any) {
 }
 
 export async function listarComercios() {
-    const querySnapshot = await getDocs(collection(db, "comercios"));
-    const comercios = querySnapshot.docs.map((doc) => doc.data());
-    return comercios;
+    try {
+        const querySnapshot = await getDocs(collection(db, "comercios"));
+
+        let comercios = [];
+        querySnapshot.docs.forEach((doc) => {doc.data()
+            let comercio = {id: doc.id, ...doc.data()};
+            comercios.push(comercio);
+        });
+        return comercios;    
+    }
+    catch (error) {
+        console.log(error);
+        return [];
+    }
 }

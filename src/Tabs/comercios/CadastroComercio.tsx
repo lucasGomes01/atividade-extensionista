@@ -1,12 +1,12 @@
 import { Box, ScrollView } from 'native-base';
-import { Title } from './components/Title';
-import { Botao } from './components/Botao';
-import { EntradaTexto } from './components/EntradaTexto';
-import { formCadastro } from './utils/formCadastro';
+import { Title } from '../../components/Title';
+import { Botao } from '../../components/Botao';
+import { EntradaTexto } from '../../components/EntradaTexto';
+import { formCadastro } from '../../utils/formCadastro';
 import React, { useState } from 'react';
 
-import { salvarComercio } from './services/firestore';
-import { Alerta } from './components/Alerta';
+import { salvarComercio } from '../../services/firestore';
+import { Alerta } from '../../components/Alerta';
 
 export default function CadastroComercio({ navigation }) {
   const [statusError, setStatusError] = useState(false);

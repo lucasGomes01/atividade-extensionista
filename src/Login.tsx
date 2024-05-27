@@ -22,7 +22,7 @@ export default function Login({navigation}) {
         />
       </Box>
 
-      <Botao onPress={() => navigation.navigate('Cadastros')}>Entrar</Botao>
+      <Botao onPress={() => navigation.navigate('Tabs')}>Entrar</Botao>
 
       <Link href='' mt={2}>
         Esqueceu sua senha?
