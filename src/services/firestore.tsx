@@ -1,10 +1,17 @@
-import { db } from '../config/firebaseConfig';
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { auth, db } from '../config/firebaseConfig';
+import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 
 // Cadastros
-export async function salvarComercio(data: any) {
+export async function salvarComercio(comercioId: string, data: any) {
     try {
-        await addDoc(collection(db, "comercios"), data);
+        if (!!!comercioId) {
+            await addDoc(collection(db, "comercios"), { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
+        }
+        else {
+            const comercioRef = doc(db, "comercios", comercioId);
+            await updateDoc(comercioRef, { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
+        }
+
         return 'ok';
     } catch (error) {
         console.log(error);
@@ -12,9 +19,16 @@ export async function salvarComercio(data: any) {
     }
 }
 
-export async function salvarUsuario(data: any) {
+export async function salvarUsuario(usuarioId: string, data: any) {
     try {
-        await addDoc(collection(db, "users"), data);
+        if (!!!usuarioId) {
+            await addDoc(collection(db, "users"), { ...data, timestamp: serverTimestamp() });
+        }
+        else {
+            const comercioRef = doc(db, "users", usuarioId);
+            await updateDoc(comercioRef, { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
+        }
+
         return 'ok';
     } catch (error) {
         console.log(error);
@@ -28,11 +42,12 @@ export async function retornarListaComercios() {
         const querySnapshot = await getDocs(collection(db, "comercios"));
 
         let comercios = [];
-        querySnapshot.docs.forEach((doc) => {doc.data()
-            let comercio = {id: doc.id, ...doc.data()};
+        querySnapshot.docs.forEach((doc) => {
+            doc.data()
+            let comercio = { id: doc.id, ...doc.data() };
             comercios.push(comercio);
         });
-        return comercios;    
+        return comercios;
     }
     catch (error) {
         console.log(error);
@@ -45,11 +60,12 @@ export async function retornarListaUsuarios() {
         const querySnapshot = await getDocs(collection(db, "users"));
 
         let comercios = [];
-        querySnapshot.docs.forEach((doc) => {doc.data()
-            let comercio = {id: doc.id, ...doc.data()};
+        querySnapshot.docs.forEach((doc) => {
+            doc.data()
+            let comercio = { id: doc.id, ...doc.data() };
             comercios.push(comercio);
         });
-        return comercios;    
+        return comercios;
     }
     catch (error) {
         console.log(error);

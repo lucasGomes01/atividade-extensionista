@@ -8,15 +8,15 @@ import React, { useEffect, useState } from 'react';
 import { salvarComercio } from '../../services/firestore';
 import { Alerta } from '../../components/Alerta';
 
-export default function CadastroComercio({ navigation }) {
+export default function CadastroComercio({ navigation, route }) {
   const [statusError, setStatusError] = useState(false);
   const [mensagem, setMensagem] = useState('')
-  const [data, setData] = useState({});
+  const [data, setData] = useState(route?.params || {});
 
   useEffect(() => {
     const initialData = {};
     formCadastro[1].entradaTexto.forEach((entrada) => {
-      initialData[entrada.value] = '';
+      initialData[entrada.value] = data[entrada.value] || '';
     });
     setData(initialData);
   }, []);
@@ -37,7 +37,7 @@ export default function CadastroComercio({ navigation }) {
       return;
     }
 
-    const result = await salvarComercio(data);
+    const result = await salvarComercio(route?.params?.id, data);
 
     if (result === 'ok') {
       console.log('Comercio cadastrado com sucesso');
@@ -51,7 +51,7 @@ export default function CadastroComercio({ navigation }) {
   return (
     <ScrollView flex={1} p={5}>
       <Title>
-        Cadastrar Novo Usuário
+        Cadastrar Comércio
       </Title>
       <Box>
         {
@@ -60,6 +60,7 @@ export default function CadastroComercio({ navigation }) {
               label={entrada.label}
               placeholder={entrada.placeholder}
               key={entrada.id}
+              value={data[entrada.value]}
               onChangeText={texto => setValue(texto, entrada.value)}
             />
           })

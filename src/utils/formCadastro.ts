@@ -27,6 +27,14 @@ const formCadastro = [{
       value: 'senhaConfirmacao',
       placeholder: 'Insira sua senha',
       secureTextEntry: true,
+    },
+    {
+      id: 5,
+      label: 'Uid',
+      value: 'uid',
+      placeholder: '',
+      secureTextEntry: true,
+      show: false
     }
   ],
   checkbox: []

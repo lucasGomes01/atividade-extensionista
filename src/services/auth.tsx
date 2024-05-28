@@ -1,8 +1,8 @@
 import { auth } from '../config/firebaseConfig';
-import { 
-    createUserWithEmailAndPassword, 
+import {
+    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    AuthErrorCodes, 
+    AuthErrorCodes,
     UserCredential
 } from "firebase/auth";
 
@@ -36,7 +36,7 @@ function handleAuthError(error: any) {
 }
 
 export async function createUser(email: string, senha: string): Promise<CreateUserResult> {
-    if(!email || !senha) return { success: false, error: 'Email e senha são obrigatórios' };
+    if (!email || !senha) return { success: false, error: 'Email e senha são obrigatórios' };
 
     try {
         const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, senha);

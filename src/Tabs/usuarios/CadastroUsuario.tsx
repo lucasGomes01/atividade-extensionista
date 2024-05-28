@@ -8,15 +8,15 @@ import { useEffect, useState } from 'react';
 import { salvarUsuario } from '../../services/firestore';
 import { Alerta } from '../../components/Alerta';
 
-export default function Cadastro({ navigation }) {
+export default function Cadastro({ navigation, route }) {
   const [statusError, setStatusError] = useState(false);
   const [mensagem, setMensagem] = useState('');
-  const [data, setData] = useState({});
+  const [data, setData] = useState(route?.params || {});
 
   useEffect(() => {
     const initialData = {};
     formCadastro[0].entradaTexto.forEach((entrada) => {
-      initialData[entrada.value] = '';
+      initialData[entrada.value] = data[entrada.value] || '';
     });
     setData(initialData);
   }, []);
@@ -42,13 +42,13 @@ export default function Cadastro({ navigation }) {
       return;
     }
 
-    const createUserResult = await createUser(data["email"], data["senha"]);
+    const createUserResult = !!!route?.params?.id ? await createUser(data["email"], data["senha"]) : { success: true };
 
     if (createUserResult.success) {
       setValue("senha", "");
       setValue("senhaConfirmacao", "");
 
-      const result = await salvarUsuario({ email: data["email"], nome: data["nome"], uid: createUserResult.uid});
+      const result = await salvarUsuario(route?.params?.id, { email: data["email"], nome: data["nome"], uid: createUserResult.uid || data["uid"] });
 
       if (result === 'ok') {
         console.log('Usuario cadastrado com sucesso');
@@ -69,12 +69,15 @@ export default function Cadastro({ navigation }) {
       <Box>
         {
           formCadastro[0].entradaTexto.map((entrada) => {
-            return <EntradaTexto
-              label={entrada.label}
-              placeholder={entrada.placeholder}
-              key={entrada.id}
-              onChangeText={texto => setValue(texto, entrada.value)}
-            />
+            if (entrada.show != false) {
+              return <EntradaTexto
+                label={entrada.label}
+                placeholder={entrada.placeholder}
+                key={entrada.id}
+                value={data[entrada.value]}
+                onChangeText={texto => setValue(texto, entrada.value)}
+              />
+            }
           })
         }
       </Box>
