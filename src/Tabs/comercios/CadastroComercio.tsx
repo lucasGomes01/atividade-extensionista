@@ -40,11 +40,11 @@ export default function CadastroComercio({ navigation, route }) {
     const result = await salvarComercio(route?.params?.id, data);
 
     if (result === 'ok') {
-      console.log('Comercio cadastrado com sucesso');
+      console.log('Comércio cadastrado com sucesso');
 
       navigation.goBack();
     } else {
-      console.log('Erro ao cadastrar comercio');
+      console.log('Erro ao cadastrar comércio');
     }
   }
 

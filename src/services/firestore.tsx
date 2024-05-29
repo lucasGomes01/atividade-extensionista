@@ -1,5 +1,5 @@
 import { auth, db } from '../config/firebaseConfig';
-import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc } from "firebase/firestore";
 
 // Cadastros
 export async function salvarComercio(comercioId: string, data: any) {
@@ -25,13 +25,25 @@ export async function salvarUsuario(usuarioId: string, data: any) {
             await addDoc(collection(db, "users"), { ...data, timestamp: serverTimestamp() });
         }
         else {
-            const comercioRef = doc(db, "users", usuarioId);
-            await updateDoc(comercioRef, { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
+            const usuarioRef = doc(db, "users", usuarioId);
+            await updateDoc(usuarioRef, { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
         }
 
         return 'ok';
     } catch (error) {
         console.log(error);
+        return false;
+    }
+}
+
+// Excluir 
+export async function excluirComercio(comercioId: string) {
+    try {
+        await deleteDoc(doc(db, "comercios", comercioId));
+
+        return 'ok';
+    } catch (error) {
+        console.log("Erro ao deletar o documento:", error);
         return false;
     }
 }

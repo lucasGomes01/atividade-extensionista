@@ -1,6 +1,6 @@
 import { VStack, ScrollView, Button } from "native-base";
 import { useEffect, useState } from "react";
-import { retornarListaComercios } from "../../services/firestore";
+import { excluirComercio, retornarListaComercios } from "../../services/firestore";
 import { CardListagem } from "../../components/CardListagem";
 import { RefreshControl } from "react-native";
 
@@ -15,6 +15,16 @@ export default function Comercios({ navigation }) {
         setRefreshing(false);
     }
 
+    async function excluir(dados: any) {
+        const result = await excluirComercio(dados.id);
+
+        if (result === 'ok') {
+          console.log('Comércio excluido com sucesso');
+        } else {
+          console.log('Erro ao excluir o Comércio');
+        }
+    }
+    
     useEffect(() => { listarDadosComericios() }, []);
 
     return (
@@ -41,6 +51,7 @@ export default function Comercios({ navigation }) {
                                 nameNavegation="CadastroComercio"
                                 navigation={navigation}
                                 dados={comercio}
+                                excluirItem={() => excluir(comercio)}
                             />
                         })
                     }

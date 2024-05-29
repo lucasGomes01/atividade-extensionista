@@ -1,4 +1,5 @@
-import { Text, Avatar, VStack, HStack, Button, Spacer } from 'native-base';
+import { Text, Avatar, VStack, HStack } from 'native-base';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 interface CardListagemProps {
@@ -8,6 +9,7 @@ interface CardListagemProps {
     nameNavegation: string;
     navigation: any;
     dados: any;
+    excluirItem?: () => void;
 }
 
 export function CardListagem({
@@ -16,7 +18,8 @@ export function CardListagem({
     data,
     dados,
     navigation,
-    nameNavegation
+    nameNavegation,
+    excluirItem
 }: CardListagemProps) {
     return (
         <VStack w="100%" p="2" borderRadius="xs" shadow="1" mb="1">
@@ -26,8 +29,18 @@ export function CardListagem({
                     <Text fontSize="md" bold>{nome}</Text>
                     <Text>{data}</Text>
                 </VStack>
-                <Ionicons name={"create-outline"} onPress={() => { navigation.navigate(nameNavegation, dados) }} size={23} color="blue" />
-                <Ionicons name={"trash-outline"} size={23} color="blue" />
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate(nameNavegation, dados) }}
+                >
+                    <Ionicons name={"create-outline"} size={23} color="blue" />
+                </TouchableOpacity>
+                {excluirItem && (
+                    <TouchableOpacity
+                        onPress={() => { excluirItem() }}
+                    >
+                        <Ionicons name={"trash-outline"} size={23} color="blue" />
+                    </TouchableOpacity>
+                )}
             </HStack>
         </VStack>
     );
