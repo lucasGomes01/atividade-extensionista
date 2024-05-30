@@ -85,8 +85,7 @@ export async function retornarListaUsuarios() {
     }
 }
 
-
-// 
+// Atualização em tempo real
 export async function detectarAtualizacaoDocumento(collectionName: string, setCollection: (items: any[]) => void) {
     const q = query(collection(db, collectionName));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

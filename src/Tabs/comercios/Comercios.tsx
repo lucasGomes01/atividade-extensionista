@@ -59,7 +59,7 @@ export default function Comercios({ navigation }) {
                             return <CardListagem
                                 key={comercio.id}
                                 nome={comercio.nome}
-                                foto={comercio.foto}
+                                foto={comercio.urlImagem}
                                 data={comercio?.timestamp?.toDate().toLocaleDateString()}
                                 nameNavegation="CadastroComercio"
                                 navigation={navigation}

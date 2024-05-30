@@ -7,11 +7,13 @@ import React, { useEffect, useState } from 'react';
 
 import { salvarComercio } from '../../services/firestore';
 import { Alerta } from '../../components/Alerta';
+import { uploadArquivoPorUlr } from '../../services/storage';
 
 export default function CadastroComercio({ navigation, route }) {
   const [statusError, setStatusError] = useState(false);
-  const [mensagem, setMensagem] = useState('')
+  const [mensagem, setMensagem] = useState('');
   const [data, setData] = useState(route?.params || {});
+  //const [urlImagem, setUrlImagem] = useState(route?.params?.urlImagem || '');
 
   useEffect(() => {
     const initialData = {};
@@ -37,6 +39,10 @@ export default function CadastroComercio({ navigation, route }) {
       return;
     }
 
+    // if(urlImagem) {
+    //   uploadArquivoPorUlr(urlImagem, 'comercios/');
+    // }
+
     const result = await salvarComercio(route?.params?.id, data);
 
     if (result === 'ok') {
@@ -53,6 +59,12 @@ export default function CadastroComercio({ navigation, route }) {
       <Title>
         Cadastrar Comércio
       </Title>
+      {/* <EntradaTexto
+        label="Url"
+        placeholder="Url da imagem"
+        value={urlImagem}
+        onChangeText={texto => setUrlImagem(texto)}
+      /> */}
       <Box>
         {
           formCadastro[1].entradaTexto.map((entrada) => {
