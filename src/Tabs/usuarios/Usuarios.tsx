@@ -1,6 +1,6 @@
 import { VStack, ScrollView, Button } from "native-base";
 import { useEffect, useState } from "react";
-import { retornarListaUsuarios } from "../../services/firestore";
+import { detectarAtualizacaoDocumento, retornarListaUsuarios } from "../../services/firestore";
 import { CardListagem } from "../../components/CardListagem";
 import { RefreshControl } from "react-native";
 
@@ -15,7 +15,10 @@ export default function Usuarios({ navigation }) {
         setRefreshing(false);
     }
 
-    useEffect(() => { listarDadosUsuarios(); }, []);
+    useEffect(() => { 
+        listarDadosUsuarios(); 
+        detectarAtualizacaoDocumento('users', setUsuarios);
+    }, []);
 
     return (
         <ScrollView

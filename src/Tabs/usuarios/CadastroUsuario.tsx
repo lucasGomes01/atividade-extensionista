@@ -29,7 +29,10 @@ export default function Cadastro({ navigation, route }) {
   }
 
   async function cadastrarUsuario() {
-    const isEmpty = Object.values(data).some(value => value === '');
+    const isEmpty = Object.entries(data).some(([key, value]) => {
+      const entrada = formCadastro[0].entradaTexto.find(entrada => entrada.value === key);
+      return entrada && entrada.visible !== false && value === '';
+    });
 
     if (isEmpty) {
       setStatusError(true);
@@ -69,7 +72,7 @@ export default function Cadastro({ navigation, route }) {
       <Box>
         {
           formCadastro[0].entradaTexto.map((entrada) => {
-            if (entrada.show != false) {
+            if (entrada.visible != false) {
               return <EntradaTexto
                 label={entrada.label}
                 placeholder={entrada.placeholder}

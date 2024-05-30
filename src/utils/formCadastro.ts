@@ -34,7 +34,7 @@ const formCadastro = [{
       value: 'uid',
       placeholder: '',
       secureTextEntry: true,
-      show: false
+      visible: false
     }
   ],
   checkbox: []

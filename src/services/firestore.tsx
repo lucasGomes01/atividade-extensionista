@@ -1,5 +1,5 @@
 import { auth, db } from '../config/firebaseConfig';
-import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc, query, onSnapshot } from "firebase/firestore";
 
 // Cadastros
 export async function salvarComercio(comercioId: string, data: any) {
@@ -83,4 +83,18 @@ export async function retornarListaUsuarios() {
         console.log(error);
         return [];
     }
+}
+
+
+// 
+export async function detectarAtualizacaoDocumento(collectionName: string, setCollection: (items: any[]) => void) {
+    const q = query(collection(db, collectionName));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const items = [];
+        querySnapshot.forEach((doc) => {
+            items.push({id: doc.id, ...doc.data()});
+        });
+
+        setCollection(items);
+    });
 }
