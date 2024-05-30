@@ -2,7 +2,7 @@ import { auth, db } from '../config/firebaseConfig';
 import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc, query, onSnapshot } from "firebase/firestore";
 
 // Cadastros
-export async function salvarComercio(comercioId: string, data: any) {
+export async function salvarComercio(comercioId: string, data: any): Promise<string> {
     try {
         if (!!!comercioId) {
             await addDoc(collection(db, "comercios"), { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
@@ -14,8 +14,8 @@ export async function salvarComercio(comercioId: string, data: any) {
 
         return 'ok';
     } catch (error) {
-        console.log(error);
-        return false;
+        console.log('Erro ao salvar o comércio', error);
+        return 'Erro ao salvar o comércio';
     }
 }
 
@@ -91,7 +91,7 @@ export async function detectarAtualizacaoDocumento(collectionName: string, setCo
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const items = [];
         querySnapshot.forEach((doc) => {
-            items.push({id: doc.id, ...doc.data()});
+            items.push({ id: doc.id, ...doc.data() });
         });
 
         setCollection(items);

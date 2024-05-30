@@ -13,7 +13,6 @@ export default function CadastroComercio({ navigation, route }) {
   const [statusError, setStatusError] = useState(false);
   const [mensagem, setMensagem] = useState('');
   const [data, setData] = useState(route?.params || {});
-  //const [urlImagem, setUrlImagem] = useState(route?.params?.urlImagem || '');
 
   useEffect(() => {
     const initialData = {};
@@ -39,15 +38,17 @@ export default function CadastroComercio({ navigation, route }) {
       return;
     }
 
-    // if(urlImagem) {
-    //   uploadArquivoPorUlr(urlImagem, 'comercios/');
-    // }
-
-    const result = await salvarComercio(route?.params?.id, data);
+    let result = '';
+    if (data.urlImagem) {
+      await uploadArquivoPorUlr(data.urlImagem, 'comercios/').then(async (url) => {
+        result = await salvarComercio(route?.params?.id, { ...data, urlImagem: url });
+      });
+    }
+    else {
+      result = await salvarComercio(route?.params?.id, data);
+    }
 
     if (result === 'ok') {
-      console.log('Comércio cadastrado com sucesso');
-
       navigation.goBack();
     } else {
       console.log('Erro ao cadastrar comércio');
@@ -59,12 +60,6 @@ export default function CadastroComercio({ navigation, route }) {
       <Title>
         Cadastrar Comércio
       </Title>
-      {/* <EntradaTexto
-        label="Url"
-        placeholder="Url da imagem"
-        value={urlImagem}
-        onChangeText={texto => setUrlImagem(texto)}
-      /> */}
       <Box>
         {
           formCadastro[1].entradaTexto.map((entrada) => {
