@@ -26,7 +26,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "sdkVersion": "50.0.0"
+    "sdkVersion": "50.0.0",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ]
   },
   "name": "voll-mobile"
 }

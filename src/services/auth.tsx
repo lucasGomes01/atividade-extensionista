@@ -55,7 +55,7 @@ export async function loginUser(email: string, senha: string): Promise<boolean> 
         console.log("login");
         return true;
     } catch (error) {
-        console.log(error);
+        console.log("LoginUser", error, email, senha);
         return false;
     }
 }

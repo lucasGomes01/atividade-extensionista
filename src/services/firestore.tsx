@@ -1,5 +1,5 @@
 import { auth, db } from '../config/firebaseConfig';
-import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc, query, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc, query, onSnapshot, orderBy } from "firebase/firestore";
 
 // Cadastros
 export async function salvarComercio(comercioId: string, data: any): Promise<string> {
@@ -12,7 +12,7 @@ export async function salvarComercio(comercioId: string, data: any): Promise<str
             await updateDoc(comercioRef, { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
         }
 
-        return 'ok';
+        return 'Comércio salvo com sucesso';
     } catch (error) {
         console.log('Erro ao salvar o comércio', error);
         return 'Erro ao salvar o comércio';
@@ -51,7 +51,8 @@ export async function excluirComercio(comercioId: string) {
 // Listas
 export async function retornarListaComercios() {
     try {
-        const querySnapshot = await getDocs(collection(db, "comercios"));
+        const q = query(collection(db, "comercios"), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
 
         let comercios = [];
         querySnapshot.docs.forEach((doc) => {
@@ -69,7 +70,8 @@ export async function retornarListaComercios() {
 
 export async function retornarListaUsuarios() {
     try {
-        const querySnapshot = await getDocs(collection(db, "users"));
+        const q = query(collection(db, "users"), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
 
         let comercios = [];
         querySnapshot.docs.forEach((doc) => {
@@ -87,7 +89,7 @@ export async function retornarListaUsuarios() {
 
 // Atualização em tempo real
 export async function detectarAtualizacaoDocumento(collectionName: string, setCollection: (items: any[]) => void) {
-    const q = query(collection(db, collectionName));
+    const q = query(collection(db, collectionName), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const items = [];
         querySnapshot.forEach((doc) => {
