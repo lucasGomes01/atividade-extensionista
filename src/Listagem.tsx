@@ -35,7 +35,7 @@ export default function Listagem({ navigation }) {
             >
                 {
                     comercios?.map((comercio) => {
-                        return <CardListagemPost teste
+                        return <CardListagemPost
                             key={comercio.id}
                             nome={comercio.nome}
                             foto={comercio.urlImagem}
