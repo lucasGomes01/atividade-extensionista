@@ -6,35 +6,34 @@ const formCadastro = [{
       id: 1,
       label: 'Nome',
       value: 'nome',
-      placeholder: 'Digite seu nome completo'
+      placeholder: 'Digite o nome completo',
+      opcional: false,
+      visible: true
     },
     {
       id: 2,
       label: 'Email',
       value: 'email',
-      placeholder: 'Digite seu email'
+      placeholder: 'Digite o email',
+      opcional: false,
+      visible: true
     },
     {
       id: 3,
       label: 'Crie uma senha',
       value: 'senha',
       placeholder: 'Insira sua senha',
-      secureTextEntry: true
+      secureTextEntry: true,
+      opcional: true,
+      visible: false
     },
     {
       id: 4,
-      label: 'Confirme sua senha',
-      value: 'senhaConfirmacao',
-      placeholder: 'Insira sua senha',
-      secureTextEntry: true
-    },
-    {
-      id: 5,
       label: 'Uid',
       value: 'uid',
       placeholder: '',
       secureTextEntry: true,
-      opcional: false,
+      opcional: true,
       visible: false
     }
   ],

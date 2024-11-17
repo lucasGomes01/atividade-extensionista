@@ -3,7 +3,8 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     AuthErrorCodes,
-    UserCredential
+    UserCredential,
+    sendPasswordResetEmail
 } from "firebase/auth";
 
 interface CreateUserResult {
@@ -51,11 +52,21 @@ export async function createUser(email: string, senha: string): Promise<CreateUs
 
 export async function loginUser(email: string, senha: string): Promise<boolean> {
     try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-        console.log("login");
+        await signInWithEmailAndPassword(auth, email, senha);
+        
+        console.log("login", email, senha);
+        //changePasswordByEmail(email);
         return true;
     } catch (error) {
         console.log("LoginUser", error, email, senha);
         return false;
     }
+}
+
+export async function changePasswordByEmail(email: string) {
+    sendPasswordResetEmail(auth, email).then(function () {
+        console.log("E-mail de redefinição de senha enviado.");
+    }).catch(function (error) {
+        console.error("Erro ao enviar o e-mail de redefinição de senha: ", error);
+    });
 }

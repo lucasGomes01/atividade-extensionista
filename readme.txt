@@ -10,3 +10,4 @@ exemplo .env:
         MEASUREMENT_ID=
 
     
+Rodar projeto: npx expo start

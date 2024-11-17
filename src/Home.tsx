@@ -1,6 +1,5 @@
 import { VStack } from "native-base";
 import { Title } from "./components/Title";
-import { Botao } from "./components/Botao";
 import { BotaoCadastro } from "./components/BotaoCadastro";
 
 export default function Home({ navigation }) {

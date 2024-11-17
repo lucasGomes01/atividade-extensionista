@@ -1,12 +1,17 @@
 import { Box, ScrollView } from 'native-base';
-import { Title } from '../../components/Title';
+import { useEffect, useState } from 'react';
+import { Text } from 'react-native';
+
+import { Alerta } from '../../components/Alerta';
 import { Botao } from '../../components/Botao';
 import { EntradaTexto } from '../../components/EntradaTexto';
+import { Title } from '../../components/Title';
+
 import { formCadastro } from '../../utils/formCadastro';
+
 import { createUser } from '../../services/auth';
-import { useEffect, useState } from 'react';
 import { salvarUsuario } from '../../services/firestore';
-import { Alerta } from '../../components/Alerta';
+
 
 export default function Cadastro({ navigation, route }) {
   const [statusError, setStatusError] = useState(false);
@@ -29,33 +34,26 @@ export default function Cadastro({ navigation, route }) {
   }
 
   async function cadastrarUsuario() {
-    const isEmpty = Object.entries(data).some(([key, value]) => {
-      const entrada = formCadastro[0].entradaTexto.find(entrada => entrada.value === key);
-      return entrada && entrada.visible !== false && value === '';
-    });
+    const lstOpcionais = formCadastro[0].entradaTexto.filter(item => item.opcional == true && item.visible == false).map(item => item.value);
+    console.log(lstOpcionais);
+    const isEmpty = Object.entries(data).some(([key, value]) => value === '' && !lstOpcionais.includes(key));
 
     if (isEmpty) {
       setStatusError(true);
-      setMensagem("Por favor preencha todos os campos");
+      setMensagem("Por favor, preencha todos os campos!");
       return;
     }
-    else if (data["senha"] !== data["senhaConfirmacao"]) {
-      setStatusError(true);
-      setMensagem("As senhas não coincidem");
-      return;
-    }
+
+    data["senha"] = Math.random().toString(36).substring(7);
 
     const createUserResult = !!!route?.params?.id ? await createUser(data["email"], data["senha"]) : { success: true };
 
     if (createUserResult.success) {
-      setValue("senha", "");
-      setValue("senhaConfirmacao", "");
-
-      const result = await salvarUsuario(route?.params?.id, { email: data["email"], nome: data["nome"], uid: createUserResult.uid || data["uid"] });
+      const result = await salvarUsuario(route?.params?.id, { email: data["email"], nome: data["nome"], uid: createUserResult.uid || data["uid"], mudarSenha: true });
 
       if (result === 'ok') {
         console.log('Usuario cadastrado com sucesso');
-        navigation.goBack();
+        //navigation.goBack();
       }
     }
     else {
@@ -66,26 +64,46 @@ export default function Cadastro({ navigation, route }) {
 
   return (
     <ScrollView flex={1} p={5}>
-      <Title>
-        Cadastrar Novo Usuário
-      </Title>
-      <Box>
-        {
-          formCadastro[0].entradaTexto.map((entrada) => {
-            if (entrada.visible != false) {
-              return <EntradaTexto
-                label={entrada.label}
-                placeholder={entrada.placeholder}
-                key={entrada.id}
-                value={data[entrada.value]}
-                onChangeText={texto => setValue(texto, entrada.value)}
-              />
-            }
-          })
-        }
-      </Box>
+      <Title>Cadastrar Novo Usuário</Title>
 
-      <Botao onPress={() => cadastrarUsuario()} bgColor={"blue.800"} mt={4}>Cadastrar</Botao>
+      <Box>
+        {data["senha"] === "" ? (
+          <>
+            {formCadastro[0].entradaTexto.map((entrada) => (
+              entrada.visible !== false && (
+                <EntradaTexto
+                  label={entrada.label}
+                  placeholder={entrada.placeholder}
+                  key={entrada.id}
+                  value={data[entrada.value]}
+                  onChangeText={texto => setValue(texto, entrada.value)}
+                />
+              )
+            ))}
+
+            <Botao onPress={cadastrarUsuario} bgColor={"blue.800"} mt={4}>
+              Cadastrar
+            </Botao>
+          </>
+        ) : (
+          <>
+            <Text>Por favor, copie e envie a senha para o usuário</Text>
+
+            <EntradaTexto
+              label="Senha Temporária"
+              placeholder="Senha Temporária"
+              value={data["senha"]}
+            />
+
+            <Botao
+              onPress={() => navigation.navigate('Tabs')}
+              bgColor={"blue.100"} mt={4}
+            >
+              Copiar
+            </Botao>
+          </>
+        )}
+      </Box>
 
       <Alerta
         mensagem={mensagem}

@@ -1,9 +1,11 @@
+import { Alert, RefreshControl } from "react-native";
 import { VStack, ScrollView, Button } from "native-base";
 import { useEffect, useState } from "react";
-import { detectarAtualizacaoDocumento, excluirComercio, retornarListaComercios } from "../../services/firestore";
-import { CardListagem } from "../../components/CardListagem";
-import { Alert, RefreshControl } from "react-native";
 
+import { detectarAtualizacaoDocumento, excluirComercio, retornarListaComercios } from "../../services/firestore";
+
+import { CardListagem } from "../../components/CardListagem";
+import imgPadrao from '../../assets/upload.jpeg';
 export default function Comercios({ navigation }) {
     const [comercios, setComercios] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -56,10 +58,11 @@ export default function Comercios({ navigation }) {
                 <VStack w="100%" >
                     {
                         comercios?.map((comercio) => {
+                            console.log(imgPadrao.uri);
                             return <CardListagem
                                 key={comercio.id}
                                 nome={comercio.nome}
-                                foto={comercio.urlImagem}
+                                foto={comercio.urlImagem || imgPadrao.uri}
                                 data={comercio?.timestamp?.toDate().toLocaleDateString()}
                                 nameNavegation="CadastroComercio"
                                 navigation={navigation}

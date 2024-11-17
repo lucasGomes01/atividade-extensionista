@@ -15,7 +15,7 @@ export async function uploadArquivoPorUlr(url: string, urlDestino: string): Prom
         return url;
     }
     catch (error) {
-        console.log("Erro ao fazer o upload da imagem:", error);
+        console.log("Erro ao realizar o upload da imagem:", error);
     };
 }
 
