@@ -109,6 +109,7 @@ export default function CadastroComercio({ navigation, route }) {
               placeholder={entrada.placeholder}
               key={entrada.id}
               value={data[entrada.value]}
+              type={entrada.type}
               onChangeText={texto => setValue(texto, entrada.value)}
             />
           })

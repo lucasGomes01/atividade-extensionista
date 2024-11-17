@@ -54,14 +54,14 @@ const formCadastro = [{
       id: 2,
       label: 'Nome',
       value: 'nome',
-      placeholder: 'Digite seu nome completo',
+      placeholder: 'Nome Comercio',
       opcional: false
     },
     {
       id: 3,
       label: 'Descricao',
       value: 'descricao',
-      placeholder: 'Digite seu email',
+      placeholder: 'Descição dos serviços',
       opcional: false
     },
     {
@@ -78,6 +78,15 @@ const formCadastro = [{
       placeholder: 'telefone 2',
       opcional: true,
       visible: true
+    },
+    {
+      id: 6,
+      label: 'Horário Abertura',
+      value: 'HorarioFuncionamento',
+      placeholder: 'Horário de funcionamento',
+      opcional: false,
+      visible: true,
+      type: 'time'
     }
   ],
   checkbox: []

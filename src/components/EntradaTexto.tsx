@@ -1,5 +1,6 @@
 import { Input, FormControl } from "native-base";
-import { TextInput } from "react-native";
+import { SeletorHoras } from "./SeletorHoras";
+import { useState } from "react";
 
 interface InputProps {
   label?: string;
@@ -7,6 +8,7 @@ interface InputProps {
   secureTextEntry?: boolean;
   leftIcon?: React.ReactNode;
   value?: any;
+  type?: string;
   onChangeText?: (text: string) => void;
 }
 
@@ -15,22 +17,33 @@ export function EntradaTexto({
   placeholder,
   secureTextEntry = false,
   value,
+  type,
   onChangeText
 }: InputProps): JSX.Element {
+  const [selectedHour, setSelectedHour] = useState<Date | null>(null);
+
+  const handleHourChange = (hour: Date) => {
+      setSelectedHour(hour);
+  };
+
   return (
     <FormControl mt={3}>
       {label && <FormControl.Label>{label}</FormControl.Label>}
-      <Input
-        placeholder={placeholder}
-        size="lg"
-        w="100%"
-        borderRadius="lg"
-        bgColor="gray.100"
-        secureTextEntry={secureTextEntry}
-        shadow={3}
-        value={value}
-        onChangeText={onChangeText}
-      />
+      {type === 'time' ? (
+            <SeletorHoras onHourChange={handleHourChange} />
+      ) : (
+        <Input
+          placeholder={placeholder}
+          size="lg"
+          w="100%"
+          borderRadius="lg"
+          bgColor="gray.100"
+          secureTextEntry={secureTextEntry}
+          shadow={3}
+          value={value}
+          onChangeText={onChangeText}
+        />
+      )}
     </FormControl>
   );
 };
