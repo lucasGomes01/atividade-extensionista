@@ -1,10 +1,10 @@
-import { VStack, ScrollView, Button } from "native-base";
+import { VStack, ScrollView } from "native-base";
 import { useEffect, useState } from "react";
-import { detectarAtualizacaoDocumento, retornarListaComercios, retornarListaUsuarios } from "./services/firestore";
-import { CardListagem } from "./components/CardListagem";
+import { detectarAtualizacaoDocumento, retornarListaComercios } from "./services/firestore";
 import { RefreshControl } from "react-native";
 import { BotaoCadastro } from "./components/BotaoCadastro";
 import { CardListagemPost } from "./components/CardListagemPost";
+import { Text } from "react-native"; 
 
 export default function Listagem({ navigation }) {
     const [comercios, setComercios] = useState([]);
@@ -18,34 +18,42 @@ export default function Listagem({ navigation }) {
     }
 
     useEffect(() => {
-        listarDadosComercios();
-        detectarAtualizacaoDocumento('Comercios', setComercios);
+        const fetchData = async () => {
+            await listarDadosComercios();
+            //detectarAtualizacaoDocumento('Comercios', setComercios);
+        };
+
+        fetchData();
     }, []);
 
     return (
         <VStack height={'100%'} >
             <ScrollView
                 flex={1}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={listarDadosComercios}
-                    />
-                }
+                 refreshControl={
+                     <RefreshControl
+                         refreshing={refreshing}
+                         onRefresh={listarDadosComercios}
+                     />
+                 }
             >
-                {
+                {comercios?.length > 0 ? (
                     comercios?.map((comercio) => {
-                        return <CardListagemPost
-                            key={comercio.id}
-                            nome={comercio.nome}
-                            foto={comercio.urlImagem}
-                            data={comercio?.timestamp?.toDate().toLocaleDateString()}
-                            nameNavegation="CadastroComercio"
-                            navigation={navigation}
-                            dados={comercio}
-                        />
+                        return (
+                            <CardListagemPost
+                                key={comercio.id}
+                                nome={comercio.nome}
+                                foto={comercio.urlImagem}
+                                data={comercio?.timestamp?.toDate().toLocaleDateString()}
+                                nameNavegation="CadastroComercio"
+                                navigation={navigation}
+                                dados={comercio}
+                            />
+                        );
                     })
-                }
+                ) : (
+                    <Text>Carregando...</Text>
+                )}
             </ScrollView>
 
             <BotaoCadastro onPress={() => { navigation.navigate('Login') }} />
