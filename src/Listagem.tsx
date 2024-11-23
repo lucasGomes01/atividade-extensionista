@@ -1,42 +1,46 @@
 import { VStack, ScrollView } from "native-base";
 import { useEffect, useState } from "react";
-import { detectarAtualizacaoDocumento, retornarListaComercios } from "./services/firestore";
+import { retornarListaComercios } from "./services/firestore";
 import { RefreshControl } from "react-native";
 import { BotaoCadastro } from "./components/BotaoCadastro";
 import { CardListagemPost } from "./components/CardListagemPost";
-import { Text } from "react-native"; 
+import { Text } from "react-native";
+import { BarraPesquisa } from "./components/BarraPesquisa";
 
 export default function Listagem({ navigation }) {
     const [comercios, setComercios] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
-    async function listarDadosComercios() {
+    async function listarDadosComercios(filtro?: string) {
         setRefreshing(true);
-        const comercios = await retornarListaComercios();
+        const comercios = await retornarListaComercios(filtro);
         setComercios(comercios);
         setRefreshing(false);
     }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await listarDadosComercios();
-            //detectarAtualizacaoDocumento('Comercios', setComercios);
-        };
+    async function pesquisar(teste: string) {
+        await listarDadosComercios(teste);
+    }
 
-        fetchData();
+    useEffect(() => {
+        listarDadosComercios();
+        //detectarAtualizacaoDocumento('Comercios', setComercios);
     }, []);
 
     return (
         <VStack height={'100%'} >
             <ScrollView
                 flex={1}
-                 refreshControl={
-                     <RefreshControl
-                         refreshing={refreshing}
-                         onRefresh={listarDadosComercios}
-                     />
-                 }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={listarDadosComercios}
+                    />
+                }
             >
+                <BarraPesquisa
+                    pesquisar={(teste) => pesquisar(teste)}
+                ></BarraPesquisa>
                 {comercios?.length > 0 ? (
                     comercios?.map((comercio) => {
                         return (

@@ -1,5 +1,5 @@
 import { auth, db } from '../config/firebaseConfig';
-import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc, query, onSnapshot, orderBy } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc, query, onSnapshot, orderBy, where } from "firebase/firestore";
 
 // Cadastros
 export async function salvarComercio(comercioId: string, data: any): Promise<string> {
@@ -49,15 +49,24 @@ export async function excluirComercio(comercioId: string) {
 }
 
 // Listas
-export async function retornarListaComercios() {
+export async function retornarListaComercios(filtro?: string) {
     try {
-        const q = query(collection(db, "comercios"), orderBy("timestamp", "desc"));
+        const queryConstraints = [];
+
+        if (filtro) {
+            queryConstraints.push(where("nome", ">=", filtro));
+            queryConstraints.push(where("nome", "<=", filtro + "\uf8ff"));
+        }
+
+        queryConstraints.push(orderBy("timestamp", "desc"));
+
+        const q = query(collection(db, "comercios"), ...queryConstraints);
         const querySnapshot = await getDocs(q);
 
         let comercios = [];
         querySnapshot.docs.forEach((doc) => {
             doc.data()
-            let comercio = { id: doc.id, ...doc.data() };
+            let comercio = { id: doc.id, ...(doc.data() as object) };
             comercios.push(comercio);
         });
         return comercios;
