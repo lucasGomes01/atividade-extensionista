@@ -1,6 +1,6 @@
 import { Input, FormControl } from "native-base";
 import { SeletorHoras } from "./SeletorHoras";
-import { useState } from "react";
+import { Combox } from "./Combox";
 
 interface InputProps {
   label?: string;
@@ -9,6 +9,8 @@ interface InputProps {
   leftIcon?: React.ReactNode;
   value?: any;
   type?: string;
+  opcional: boolean;
+  colecao?: string;
   onChangeText?: (text: any) => void;
 }
 
@@ -18,15 +20,23 @@ export function EntradaTexto({
   secureTextEntry = false,
   value,
   type,
+  opcional,
+  colecao,
   onChangeText
 }: InputProps): JSX.Element {
   return (
     <FormControl mt={3}>
-      {label && <FormControl.Label>{label}</FormControl.Label>}
+      {label && <FormControl.Label>{label + (opcional ? " (Opcional)" : "")}</FormControl.Label>}
       {type === 'time' ? (
         <SeletorHoras
           onHourChange={onChangeText}
           value={value}
+        />
+      ) : type === 'combox' ? (
+        <Combox
+          colecao={colecao}
+          value={value}
+          onChangeSelect={onChangeText}
         />
       ) : (
         <Input

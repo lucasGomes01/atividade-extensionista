@@ -19,6 +19,23 @@ export async function salvarComercio(comercioId: string, data: any): Promise<str
     }
 }
 
+export async function salvarCategoriaComercio(categoriaComercioId: string, data: any) {
+    try {
+        if (!!!categoriaComercioId) {
+            await addDoc(collection(db, "categoriaComercio"), { ...data, timestamp: serverTimestamp() });
+        }
+        else {
+            const usuarioRef = doc(db, "categoriaComercio", categoriaComercioId);
+            await updateDoc(usuarioRef, { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
+        }
+
+        return 'ok';
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
 export async function salvarUsuario(usuarioId: string, data: any) {
     try {
         if (!!!usuarioId) {
@@ -49,6 +66,25 @@ export async function excluirComercio(comercioId: string) {
 }
 
 // Listas
+export async function retornarListaCombo(colecao: string) {
+    try {
+        const q = query(collection(db, colecao), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
+
+        let dados = [];
+        querySnapshot.docs.forEach((doc) => {
+            doc.data()
+            let dado = { id: doc.id, ...doc.data() };
+            dados.push(dado);
+        });
+        return dados;
+    }
+    catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
 export async function retornarListaComercios(filtro?: string) {
     try {
         const queryConstraints = [];
@@ -108,3 +144,35 @@ export async function detectarAtualizacaoDocumento(collectionName: string, setCo
         setCollection(items);
     });
 }
+
+// Cargas iniciais
+function cadastrarCategorias() {
+    let dados = [
+        {
+            nome: "Artesanatos",
+            icone: " ",
+            usuarioAtualizacao: "lucas.gomes"
+        },
+        {
+            nome: "Lanches",
+            icone: " ",
+            usuarioAtualizacao: "lucas.gomes"
+        },
+        {
+            nome: "Sorvetes",
+            icone: " ",
+            usuarioAtualizacao: "lucas.gomes"
+        },
+        {
+            nome: "Bebidas",
+            icone: "<Entypo name=\"drink\" size={24} color=\"black\" />",
+            usuarioAtualizacao: "lucas.gomes"
+        },
+    ];
+
+    dados.forEach(async (item) => {
+        await salvarCategoriaComercio('', item);
+    });
+}
+
+//cadastrarCategorias();

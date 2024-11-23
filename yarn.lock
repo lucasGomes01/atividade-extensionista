@@ -2308,7 +2308,6 @@
     "@internationalized/message" "^3.1.2"
     "@internationalized/number" "^3.5.1"
     "@internationalized/string" "^3.2.1"
-    "@react-aria/ssr" "^3.9.2"
     "@react-aria/utils" "^3.23.2"
     "@react-types/shared" "^3.22.1"
     "@swc/helpers" "^0.5.0"
@@ -7515,6 +7514,11 @@ react-native-safe-area-context@*, "react-native-safe-area-context@>= 3.0.0", rea
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-select-dropdown@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/react-native-select-dropdown/-/react-native-select-dropdown-4.0.1.tgz"
+  integrity sha512-t4se17kALFcPb9wMbxig5dS1BE3pWRC6HPuFlM0J2Y6yhB1GsLqboy6an6R9rML8pRuGIJIxL29cbwEvPQwKxQ==
 
 react-native-size-matters@^0.3.1:
   version "0.3.1"

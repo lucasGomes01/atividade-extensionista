@@ -112,6 +112,16 @@ const formCadastro = [{
       placeholder: 'Endereço completo',
       opcional: false,
       visible: true
+    },
+    {
+      id: 10,
+      label: 'Categoria',
+      value: 'categoria',
+      placeholder: 'Categoria do comercio',
+      opcional: false,
+      visible: true,
+      type: 'combox',
+      colecao: "categoriaComercio"
     }
   ],
   checkbox: []

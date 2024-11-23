@@ -42,6 +42,7 @@ export default function CadastroComercio({ navigation, route }) {
 
     if (isEmpty) {
       setStatusError(true);
+      console.log("Algum campo obrigatório não foi preenchido: ", data);
       setMensagem("Por favor, preencha todos os campos");
       return;
     }
@@ -110,6 +111,8 @@ export default function CadastroComercio({ navigation, route }) {
               key={entrada.id}
               value={data[entrada.value]}
               type={entrada.type}
+              opcional={entrada?.opcional || false}
+              colecao={entrada.colecao}
               onChangeText={texto => setValue(texto, entrada.value)}
             />
           })
