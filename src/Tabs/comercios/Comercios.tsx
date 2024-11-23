@@ -58,7 +58,6 @@ export default function Comercios({ navigation }) {
                 <VStack w="100%" >
                     {
                         comercios?.map((comercio) => {
-                            console.log(imgPadrao.uri);
                             return <CardListagem
                                 key={comercio.id}
                                 nome={comercio.nome}

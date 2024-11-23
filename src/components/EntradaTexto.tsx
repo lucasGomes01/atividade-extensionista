@@ -9,7 +9,7 @@ interface InputProps {
   leftIcon?: React.ReactNode;
   value?: any;
   type?: string;
-  onChangeText?: (text: string) => void;
+  onChangeText?: (text: any) => void;
 }
 
 export function EntradaTexto({
@@ -20,17 +20,14 @@ export function EntradaTexto({
   type,
   onChangeText
 }: InputProps): JSX.Element {
-  const [selectedHour, setSelectedHour] = useState<Date | null>(null);
-
-  const handleHourChange = (hour: Date) => {
-      setSelectedHour(hour);
-  };
-
   return (
     <FormControl mt={3}>
       {label && <FormControl.Label>{label}</FormControl.Label>}
       {type === 'time' ? (
-            <SeletorHoras onHourChange={handleHourChange} />
+        <SeletorHoras
+          onHourChange={onChangeText}
+          value={value}
+        />
       ) : (
         <Input
           placeholder={placeholder}

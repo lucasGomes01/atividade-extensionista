@@ -82,11 +82,36 @@ const formCadastro = [{
     {
       id: 6,
       label: 'Horário Abertura',
-      value: 'HorarioFuncionamento',
-      placeholder: 'Horário de funcionamento',
+      value: 'HorarioAbertura',
+      placeholder: 'Horário de Abertura',
       opcional: false,
       visible: true,
       type: 'time'
+    },
+    {
+      id: 7,
+      label: 'Horário Fechamento',
+      value: 'HorarioFechamento',
+      placeholder: 'Horário de Fechamento',
+      opcional: false,
+      visible: true,
+      type: 'time'
+    },
+    {
+      id: 8,
+      label: 'Pontuação no google',
+      value: 'PontuacaoGoogle',
+      placeholder: 'Pontuação no google 0 - 5',
+      opcional: true,
+      visible: true
+    },
+    {
+      id: 9,
+      label: 'Endereço',
+      value: 'endereco',
+      placeholder: 'Endereço completo',
+      opcional: false,
+      visible: true
     }
   ],
   checkbox: []

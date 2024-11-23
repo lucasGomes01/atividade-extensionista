@@ -58,7 +58,7 @@ export function CardListagemPost({
                 <VStack flex={1} ml={3} height={"100%"}>
                     <Text bold fontSize="lg">{nome}</Text>
                     <HStack space={5}>
-                        <StarRating rating={dados.rating || 1} />
+                        <StarRating rating={dados.PontuacaoGoogle || 1} />
                         <Text color="gray.500" fontSize={9.4}>Hoje: {dados.horario || "18:00 - 22:30"}</Text>
                     </HStack>
                     <Text fontSize={8}>Telefone: {dados.telefone1 + (dados.telefone2 ? " / " + dados.telefone2 : "")}</Text>

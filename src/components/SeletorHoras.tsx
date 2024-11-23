@@ -4,12 +4,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface SeletorHorasProps {
     onHourChange: (hour: Date) => void;
+    value: Date;
 }
 
 export function SeletorHoras({
-    onHourChange
+    onHourChange,
+    value
 }: SeletorHorasProps) {
-    const [date, setDate] = useState(new Date(null));
+    const [date, setDate] = useState(new Date(value ? value["seconds"] * 1000 : Date.now()));
     const [showPicker, setShowPicker] = useState(false);
 
     const handleChange = (event: any, selectedDate?: Date) => {
