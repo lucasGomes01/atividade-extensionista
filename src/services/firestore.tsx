@@ -65,6 +65,27 @@ export async function excluirComercio(comercioId: string) {
     }
 }
 
+// Consultas
+export async function recuperarDadosUsuario(uid: string) {
+    try {
+        const q = query(collection(db, "users"), where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            const userData = querySnapshot.docs[0].data();
+            console.log("Dados do usuário aa:", userData);
+            return userData;
+        } else {
+            console.log("Nenhum usuário encontrado com esse UID");
+            return null;
+        }
+    } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+        return null;
+    }
+}
+
+
 // Listas
 export async function retornarListaSimplesColecao(colecao: string) {
     try {
@@ -86,7 +107,7 @@ export async function retornarListaSimplesColecao(colecao: string) {
 }
 
 export async function retornarListaComercios(filtro?: string, categoriasId?: string[]) {
-    if(filtro || categoriasId.length > 0)
+    if (filtro || categoriasId.length > 0)
         console.log("Filtros ativos:", filtro, categoriasId)
 
     try {
@@ -97,9 +118,9 @@ export async function retornarListaComercios(filtro?: string, categoriasId?: str
             queryConstraints.push(where("nome", "<=", filtro + "\uf8ff"));
         }
 
-        if(categoriasId?.length > 0)
+        if (categoriasId?.length > 0)
             queryConstraints.push(where("categoria", "in", categoriasId));
-        
+
         queryConstraints.push(orderBy("timestamp", "desc"));
 
         const q = query(collection(db, "comercios"), ...queryConstraints);

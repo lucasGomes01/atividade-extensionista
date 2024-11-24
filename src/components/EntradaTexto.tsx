@@ -9,7 +9,7 @@ interface InputProps {
   leftIcon?: React.ReactNode;
   value?: any;
   type?: string;
-  opcional: boolean;
+  opcional?: boolean;
   colecao?: string;
   onChangeText?: (text: any) => void;
 }

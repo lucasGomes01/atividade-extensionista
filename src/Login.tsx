@@ -1,22 +1,58 @@
 import { VStack, Text, Box, Link } from 'native-base';
-import { TouchableOpacity } from 'react-native';
-
+import { recuperarDadosUsuario } from "./services/firestore";
 import { Title } from './components/Title';
 import { Botao } from './components/Botao';
 import { EntradaTexto } from './components/EntradaTexto';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loginUser } from './services/auth';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState('teste2123@gmail.com');
-  const [senha, setSenha] = useState('1234123');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const dadosUsuario = await getCachedUser();
+      console.log("Dados do usuário recuperados do cache:", dadosUsuario);
+      if (dadosUsuario)
+        navigation.navigate('Tabs')
+    };
+    fetchUserData();
+  }, []);
 
   async function signInWithEmailAndPassword() {
-    const result = await loginUser(email, senha);
+    const uid = await loginUser(email, senha);
 
-    if(result)
-      navigation.navigate('Tabs')
+    if (uid) {
+      const dadosUsuario = await recuperarDadosUsuario(uid);
+
+      if(dadosUsuario["mudarSenha"])
+        navigation.navigate('MudarSenha')
+      else
+        navigation.navigate('Tabs')
+    }
   }
+
+  async function getCachedUser() {
+    //await AsyncStorage.clear();
+
+    try {
+      const userData = await AsyncStorage.getItem('@userData');
+      if (userData !== null) {
+        const user = JSON.parse(userData);
+        console.log("Dados do usuário recuperados do cache:", user);
+        return user;
+      } else {
+        console.log("Nenhum dado de usuário no cache.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Erro ao recuperar dados do usuário:", error.message);
+    }
+  }
+
 
   return (
     <VStack flex={1} alignItems="center" p={2}>
@@ -24,9 +60,9 @@ export default function Login({ navigation }) {
         Área Restrita
       </Title>
       <Text mt={10} style={{ textAlign: 'justify' }}>
-      Para realizar novos cadastros, é necessário ser um administrador. 
-      Se deseja cadastrar sua loja ou tornar-se um administrador, entre em contato conosco! 
-      Estamos à disposição para ajudar.
+        Para realizar novos cadastros, é necessário ser um administrador.
+        Se deseja cadastrar sua loja ou tornar-se um administrador, entre em contato conosco!
+        Estamos à disposição para ajudar.
       </Text>
 
       <Box
@@ -34,12 +70,12 @@ export default function Login({ navigation }) {
         mt={6}
         p={2}
       >
-      <Text>Contato: suporte.login@gmail.com.br</Text>
+        <Text>Contato: suporte.login@gmail.com.br</Text>
       </Box>
 
       <Box mt={16}>
         <EntradaTexto
-          label="Email"          
+          label="Email"
           placeholder="Insira seu endereço de e-mail"
           opcional={false}
           onChangeText={(texto) => setEmail(texto)}
@@ -52,7 +88,7 @@ export default function Login({ navigation }) {
         />
       </Box>
 
-      <Botao onPress={() => signInWithEmailAndPassword() }>Entrar</Botao>
+      <Botao onPress={() => signInWithEmailAndPassword()}>Entrar</Botao>
     </VStack>
   );
 }

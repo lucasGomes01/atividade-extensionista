@@ -66,6 +66,7 @@ export default function Comercios({ navigation }) {
                                 nameNavegation="CadastroComercio"
                                 navigation={navigation}
                                 dados={comercio}
+                                mostrarFoto={true}
                                 excluirItem={() => excluir(comercio)}
                             />
                         })

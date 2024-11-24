@@ -1,4 +1,6 @@
 import { auth } from '../config/firebaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -50,16 +52,24 @@ export async function createUser(email: string, senha: string): Promise<CreateUs
     }
 }
 
-export async function loginUser(email: string, senha: string): Promise<boolean> {
+export async function loginUser(email: string, senha: string): Promise<string> {
     try {
-        await signInWithEmailAndPassword(auth, email, senha);
+        const dadosUsuario = await signInWithEmailAndPassword(auth, email, senha);
+        const user = dadosUsuario.user;
+
+        // Salve os dados do usuário no AsyncStorage
+        await AsyncStorage.setItem('@userData', JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName
+        }));
         
         console.log("login", email, senha);
         //changePasswordByEmail(email);
-        return true;
+        return user.uid;
     } catch (error) {
-        console.log("LoginUser", error, email, senha);
-        return false;
+        console.log("Erro em LoginUser Email:", email, "Senha:", senha, "Erro:", error);
+        return "";
     }
 }
 

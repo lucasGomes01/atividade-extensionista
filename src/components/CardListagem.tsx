@@ -9,6 +9,7 @@ interface CardListagemProps {
     nameNavegation: string;
     navigation: any;
     dados: any;
+    mostrarFoto?: boolean;
     excluirItem?: () => void;
 }
 
@@ -19,12 +20,15 @@ export function CardListagem({
     dados,
     navigation,
     nameNavegation,
+    mostrarFoto,
     excluirItem
 }: CardListagemProps) {
     return (
         <VStack w="100%" p="2" borderRadius="xs" shadow="1" mb="1">
             <HStack w="100%" alignItems="center">
-                <Avatar size="md" source={{ uri: foto }} />
+                {mostrarFoto &&
+                    <Avatar size="md" source={{ uri: foto }} />
+                }
                 <VStack pl="4" flex={1}>
                     <Text fontSize="md" bold>{nome}</Text>
                     <Text>{data}</Text>
