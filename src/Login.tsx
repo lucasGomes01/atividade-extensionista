@@ -25,13 +25,15 @@ export default function Login({ navigation }) {
       </Title>
       <Box>
         <EntradaTexto
-          label="Email"
+          label="Email"          
           placeholder="Insira seu endereço de e-mail"
+          opcional={false}
           onChangeText={(texto) => setEmail(texto)}
         />
         <EntradaTexto
           label="Senha"
           placeholder="Insira sua senha"
+          opcional={false}
           onChangeText={(texto) => setSenha(texto)}
         />
       </Box>

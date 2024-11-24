@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 //import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
-import { retornarListaCombo } from '../services/firestore';
+import { retornarListaSimplesColecao } from '../services/firestore';
 
 import { StyleSheet } from 'react-native';
 
@@ -18,15 +18,15 @@ export function Combox({
   colecao,
   onChangeSelect
 }: ComboxProps) {
-  const [dadosCombox, setdadosCombox] = useState(null);
+  const [dadosCombox, setDadosCombox] = useState(null);
   const dropdownRef = useRef(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     const recuperardadosCombox = async () => {
-      const data = await retornarListaCombo(colecao);
-      setdadosCombox(data);
-
+      const data = await retornarListaSimplesColecao(colecao);
+      setDadosCombox(data);
+      
       if (data && value) {
         selecionarPorCodigo(value, data);
       }

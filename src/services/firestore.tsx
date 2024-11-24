@@ -66,7 +66,7 @@ export async function excluirComercio(comercioId: string) {
 }
 
 // Listas
-export async function retornarListaCombo(colecao: string) {
+export async function retornarListaSimplesColecao(colecao: string) {
     try {
         const q = query(collection(db, colecao), orderBy("timestamp", "desc"));
         const querySnapshot = await getDocs(q);
@@ -85,7 +85,10 @@ export async function retornarListaCombo(colecao: string) {
     }
 }
 
-export async function retornarListaComercios(filtro?: string) {
+export async function retornarListaComercios(filtro?: string, categoriasId?: string[]) {
+    if(filtro || categoriasId.length > 0)
+        console.log("Filtros ativos:", filtro, categoriasId)
+
     try {
         const queryConstraints = [];
 
@@ -94,6 +97,9 @@ export async function retornarListaComercios(filtro?: string) {
             queryConstraints.push(where("nome", "<=", filtro + "\uf8ff"));
         }
 
+        if(categoriasId?.length > 0)
+            queryConstraints.push(where("categoria", "in", categoriasId));
+        
         queryConstraints.push(orderBy("timestamp", "desc"));
 
         const q = query(collection(db, "comercios"), ...queryConstraints);
@@ -150,17 +156,17 @@ function cadastrarCategorias() {
     let dados = [
         {
             nome: "Artesanatos",
-            icone: " ",
+            icone: "<FontAwesome6 name=\"shirt\" size={24} color=\"black\" />",
             usuarioAtualizacao: "lucas.gomes"
         },
         {
             nome: "Lanches",
-            icone: " ",
+            icone: "<MaterialIcons name=\"lunch-dining\" size={24} color=\"black\" />",
             usuarioAtualizacao: "lucas.gomes"
         },
         {
             nome: "Sorvetes",
-            icone: " ",
+            icone: "<MaterialIcons name=\"icecream\" size={24} color=\"black\" />",
             usuarioAtualizacao: "lucas.gomes"
         },
         {
