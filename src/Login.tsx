@@ -9,15 +9,15 @@ import { loginUser } from './services/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState('teste.fffff@gmail.com');
+  const [senha, setSenha] = useState('ne46ks');
 
   useEffect(() => {
     const fetchUserData = async () => {
       const dadosUsuario = await getCachedUser();
-      console.log("Dados do usuário recuperados do cache:", dadosUsuario);
+
       if (dadosUsuario)
-        navigation.navigate('Tabs')
+        navigation.navigate('Tabs');
     };
     fetchUserData();
   }, []);
@@ -52,7 +52,6 @@ export default function Login({ navigation }) {
       console.error("Erro ao recuperar dados do usuário:", error.message);
     }
   }
-
 
   return (
     <VStack flex={1} alignItems="center" p={2}>

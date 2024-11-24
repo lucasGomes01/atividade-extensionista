@@ -6,8 +6,10 @@ import {
     signInWithEmailAndPassword,
     AuthErrorCodes,
     UserCredential,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    updatePassword
 } from "firebase/auth";
+import { recuperarDadosUsuario, salvarUsuario } from './firestore';
 
 interface CreateUserResult {
     success: boolean;
@@ -79,4 +81,24 @@ export async function changePasswordByEmail(email: string) {
     }).catch(function (error) {
         console.error("Erro ao enviar o e-mail de redefinição de senha: ", error);
     });
+}
+
+export async function updatePasswordInApp(newPassword: string): Promise<string> {
+    const user = auth.currentUser;
+
+    if (user) {
+        try {
+            await updatePassword(user, newPassword);
+
+            const dadosUsuario = await recuperarDadosUsuario(user.uid);
+            await salvarUsuario(dadosUsuario.id, {...dadosUsuario, mudarSenha: false});
+            
+            return "Senha atualizada com sucesso."
+        } catch (error) {
+            console.error("Erro ao atualizar a senha:", error);
+            return "Ocorreu um erro ao alterar a senha"
+        }
+    } else {
+        console.error("Usuário não autenticado.");
+    }
 }

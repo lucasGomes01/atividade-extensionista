@@ -1,5 +1,6 @@
 import { Text, Box, ScrollView } from 'native-base';
 import { useEffect, useState } from 'react';
+import * as Clipboard from 'expo-clipboard';
 
 import { Alerta } from '../../components/Alerta';
 import { Botao } from '../../components/Botao';
@@ -13,9 +14,9 @@ import { salvarUsuario } from '../../services/firestore';
 
 
 export default function Cadastro({ navigation, route }) {
-  const [data, setData] = useState(route?.params || {});
-  const [statusError, setStatusError] = useState(false);
+  const [data, setData] = useState(route?.params || {});  
   const [blExibirCadastro, setExibirCadastro] = useState(true);
+  const [statusError, setStatusError] = useState(false);
   const [mensagem, setMensagem] = useState('');
 
   useEffect(() => {
@@ -46,10 +47,10 @@ export default function Cadastro({ navigation, route }) {
 
     let senha = '';
     while (senha.length < 6) {
-        senha += Math.random().toString(36).substring(2);
+      senha += Math.random().toString(36).substring(2);
     }
 
-    data["senha"] =  senha.substring(0, 6);
+    data["senha"] = senha.substring(0, 6);
 
     const createUserResult = !!!route?.params?.id ? await createUser(data["email"], data["senha"]) : { success: true };
 
@@ -68,14 +69,19 @@ export default function Cadastro({ navigation, route }) {
     }
   }
 
+  const copiarParaClipboard = async () => {
+    console.log("Copiando senha para o clipboard");
+    await Clipboard.setStringAsync(data["senha"]);
+  };
+
   return (
     <ScrollView flex={1} p={5}>
       <Title>Novo Administrador</Title>
 
       <Text mt={5}>
-      Por favor, informe o e-mail do usuário que deseja cadastrar. Uma 
-      senha temporária será gerada após a solicitação. Após isso, copie
-       e envie a senha ao usuário.
+        Por favor, informe o e-mail do usuário que deseja cadastrar. Uma
+        senha temporária será gerada após a solicitação. Após isso, copie
+        e envie a senha ao usuário.
       </Text>
 
       <Box mt={5}>
@@ -108,8 +114,8 @@ export default function Cadastro({ navigation, route }) {
             />
 
             <Botao
-              onPress={() => navigation.navigate('Tabs')}
-              bgColor={"blue.100"} mt={4}
+              onPress={copiarParaClipboard}
+              bgColor={"blue.600"} mt={4}
             >
               Copiar
             </Botao>

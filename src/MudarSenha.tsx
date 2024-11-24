@@ -1,14 +1,73 @@
-import { VStack } from "native-base";
+
+import { VStack, Text, Box } from 'native-base';
 import { Title } from "./components/Title";
-import { BotaoCadastro } from "./components/BotaoCadastro";
+import { EntradaTexto } from './components/EntradaTexto';
+import { Botao } from './components/Botao';
+import { useState } from 'react';
+import { Alerta } from './components/Alerta';
+import { updatePasswordInApp } from './services/auth';
 
 export default function MudarSenha({ navigation }) {
+    const [senha, setSenha] = useState('');
+    const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
+
+    const [statusError, setStatusError] = useState(false);
+    const [mensagem, setMensagem] = useState('');
+
+    const alterarSenha = async () => {
+        if (senha !== confirmacaoSenha) {
+            setStatusError(true);
+            setMensagem('As senhas não correspondem. Verifique e tente novamente.');
+        }
+
+        if (senha == "") {
+            setStatusError(true);
+            setMensagem('Digite a nova senha antes de prosseguir.');
+        }
+
+        if(senha.length < 6){
+            setStatusError(true);
+            setMensagem('A senha deve ter pelo menos 6 caracteres.');
+        }
+
+        const resultado = await updatePasswordInApp(senha);
+        setStatusError(true);
+        setMensagem(resultado);
+
+        navigation.navigate('Tabs');
+    }
+
     return (
-        <VStack flex={1} alignItems="center" justifyContent={'center'} p={5}>
+        <VStack flex={1} alignItems="center" p={2}>
             <Title>
-                Home
+                Nova Senha
             </Title>
-            <BotaoCadastro onPress={() => {navigation.navigate('Cadastros')}} />
+            <Text mt={5} style={{ textAlign: 'justify' }}>
+                Você fez login com uma senha temporária fornecida por um administrador.
+                Vamos muda-la para uma de sua preferencia.
+            </Text>
+
+            <Box m={2}>
+                <EntradaTexto
+                    label="Nova Senha"
+                    placeholder="Sua Nova Senha"
+                    opcional={false}
+                    onChangeText={(texto) => setSenha(texto)}
+                />
+                <EntradaTexto
+                    label="Confirmar Senha"
+                    placeholder="Confirmar Senha"
+                    opcional={false}
+                    onChangeText={(texto) => setConfirmacaoSenha(texto)}
+                />
+            </Box>
+            <Botao onPress={alterarSenha}>Entrar</Botao>
+
+            <Alerta
+                mensagem={mensagem}
+                error={statusError}
+                setError={setStatusError}
+            />
         </VStack>
     )
 }

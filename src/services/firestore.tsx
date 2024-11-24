@@ -37,6 +37,7 @@ export async function salvarCategoriaComercio(categoriaComercioId: string, data:
 }
 
 export async function salvarUsuario(usuarioId: string, data: any) {
+    console.log("dados recebidos:", usuarioId, data)
     try {
         if (!!!usuarioId) {
             await addDoc(collection(db, "users"), { ...data, timestamp: serverTimestamp() });
@@ -72,9 +73,7 @@ export async function recuperarDadosUsuario(uid: string) {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-            const userData = querySnapshot.docs[0].data();
-            console.log("Dados do usuário aa:", userData);
-            return userData;
+            return {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
         } else {
             console.log("Nenhum usuário encontrado com esse UID");
             return null;
