@@ -19,11 +19,25 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <VStack flex={1} alignItems="center" justifyContent={'center'} p={5}>
+    <VStack flex={1} alignItems="center" p={2}>
       <Title>
-        Faça login em sua conta
+        Área Restrita
       </Title>
-      <Box>
+      <Text mt={10} style={{ textAlign: 'justify' }}>
+      Para realizar novos cadastros, é necessário ser um administrador. 
+      Se deseja cadastrar sua loja ou tornar-se um administrador, entre em contato conosco! 
+      Estamos à disposição para ajudar.
+      </Text>
+
+      <Box
+        w={'100%'}
+        mt={6}
+        p={2}
+      >
+      <Text>Contato: suporte.login@gmail.com.br</Text>
+      </Box>
+
+      <Box mt={16}>
         <EntradaTexto
           label="Email"          
           placeholder="Insira seu endereço de e-mail"
@@ -39,27 +53,6 @@ export default function Login({ navigation }) {
       </Box>
 
       <Botao onPress={() => signInWithEmailAndPassword() }>Entrar</Botao>
-
-      <Link href='' mt={2}>
-        Esqueceu sua senha?
-      </Link>
-
-      <Box
-        w={'100%'}
-        mt={8}
-        flexDirection={'row'}
-        justifyContent={'center'}
-      >
-        <Text>Ainda não tem cadastro? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
-          <Text
-            color={'blue.500'}
-          >
-            Faça seu cadastro!
-          </Text>
-        </TouchableOpacity>
-      </Box>
-
     </VStack>
   );
 }
