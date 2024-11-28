@@ -4,17 +4,19 @@ import { ReactNode } from "react";
 interface ButtonProps extends ITextProps {
     children: ReactNode;
     autoSize?: boolean;
-    color?: string;
+    bgColor?: string;
+    ftColor?: string;
 }
 
-export function Botao({ children, autoSize = false, color, ...rest }: ButtonProps) {
+export function Botao({ children, autoSize = false, bgColor, ftColor, ...rest }: ButtonProps) {
     return (
         <Button
             w={autoSize ? 'auto' : '100%'}
-            bg={color || 'blue.800'}
+            bg={bgColor || 'blue.800'}
             mt={10}
+            color={'black'}
             borderRadius="lg"
-            _text={{ color: 'white' }}
+            _text={{ color: ftColor || 'white' }}
             {...rest}
         >
             {children}

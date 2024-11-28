@@ -15,8 +15,8 @@ export default function Usuarios({ navigation }) {
         setRefreshing(false);
     }
 
-    useEffect(() => { 
-        listarDadosUsuarios(); 
+    useEffect(() => {
+        listarDadosUsuarios();
         detectarAtualizacaoDocumento('users', setUsuarios);
     }, []);
 
@@ -31,7 +31,11 @@ export default function Usuarios({ navigation }) {
                 />
             }>
             <VStack flex={1} alignItems="flex-end" p={5}>
-                <Button onPress={() => navigation.navigate('CadastroUsuario')}>Adicionar</Button>
+                <Button
+                    backgroundColor={"#2D3DCE"}
+                    onPress={() => navigation.navigate('CadastroUsuario')}>Adicionar
+                </Button>
+                
                 <VStack w="100%" >
                     {
                         usuarios.map((usuario) => {

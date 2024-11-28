@@ -1,4 +1,4 @@
-import { Avatar, Box, ScrollView } from 'native-base';
+import { Text, Box, ScrollView } from 'native-base';
 import React, { useEffect, useState } from 'react';
 
 import { Alerta } from '../../components/Alerta';
@@ -13,7 +13,7 @@ import { uploadArquivoPorUlr } from '../../services/storage';
 
 import * as ImagePicker from 'expo-image-picker';
 import { Image, TouchableOpacity } from 'react-native';
-import uploadImagemPadrao from '../../assets/upload.jpeg';
+import uploadImagemPadrao from '../../assets/upload.png';
 
 export default function CadastroComercio({ navigation, route }) {
   const [statusError, setStatusError] = useState(false);
@@ -56,7 +56,7 @@ export default function CadastroComercio({ navigation, route }) {
           comercioData.urlImagem = url;
       }
 
-      if(image) {
+      if (image) {
         const url = await uploadArquivoPorUlr(image, 'comercios/');
         if (url)
           comercioData.urlImagem = url
@@ -93,13 +93,22 @@ export default function CadastroComercio({ navigation, route }) {
           Cadastrar Comércio
         </Title>
 
+        <Text m={4}>
+          Faça o upload de uma foto de capa mostrando o que há de melhor.  
+        </Text>
+
         <TouchableOpacity
-          style={{ width: 200, height: 200, alignSelf: 'center' }}
+          style={{ 
+            width: 190, 
+            height: 142, 
+            marginRight: 23,
+            alignSelf: 'center',
+           }}
           onPress={selecionarImagemGaleria}
         >
           <Image
             source={image ? { uri: image } : uploadImagemPadrao}
-            style={{ width: 200, height: 200 }}
+            style={{ width: 190, height: 142 }}
           />
         </TouchableOpacity>
 

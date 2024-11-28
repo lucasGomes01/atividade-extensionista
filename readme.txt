@@ -9,5 +9,6 @@ exemplo .env:
         APP_ID=1:
         MEASUREMENT_ID=
 
-    
+Instalar Dependências: npm install
 Rodar projeto: npx expo start
+Gerar APK: eas build -p android --profile preview

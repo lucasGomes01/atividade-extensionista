@@ -17,7 +17,7 @@ const Tab = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: 'blue',
+        backgroundColor: '#2D3DCE',
         height: 100,
         color: 'white',
     },
@@ -38,6 +38,7 @@ function options(title: string) {
         //             name={"arrow-back"}
         //             color={"white"}
         //             size={30}
+        //             style={{ marginRight:30 }}
         //             onPress={() => navigation.replace('Home')}
         //         />
         //     </Box>

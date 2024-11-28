@@ -106,7 +106,7 @@ export async function retornarListaSimplesColecao(colecao: string) {
 }
 
 export async function retornarListaComercios(filtro?: string, categoriasId?: string[]) {
-    if (filtro || categoriasId.length > 0)
+    if (filtro || categoriasId?.length > 0)
         console.log("Filtros ativos:", filtro, categoriasId)
 
     try {

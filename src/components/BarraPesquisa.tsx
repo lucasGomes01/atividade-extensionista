@@ -28,18 +28,18 @@ export function BarraPesquisa({pesquisar
                 pl={4}
                 pr={2}
                 fontSize="md"
-                placeholderTextColor="coolGray.500"
+                placeholderTextColor="#2D3DCE"
                 value={searchValue}
                 onChangeText={(text) => setSearchValue(text)}
             />
             <IconButton
                 icon={<Ionicons name="search" size={20} color="white" />}
                 borderRadius="full"
-                bg="blue.500"
+                bg="#2D3DCE"
                 p={2.5}
                 mr={1}
                 onPress={() => { pesquisar(searchValue) }}
-                _pressed={{ bg: 'blue.600' }}
+                _pressed={{ bg: '#2842C7' }}
             />
         </HStack>
     );

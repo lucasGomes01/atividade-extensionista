@@ -25,7 +25,7 @@ export default function MudarSenha({ navigation }) {
             setMensagem('Digite a nova senha antes de prosseguir.');
         }
 
-        if(senha.length < 6){
+        if (senha.length < 6) {
             setStatusError(true);
             setMensagem('A senha deve ter pelo menos 6 caracteres.');
         }
@@ -42,6 +42,7 @@ export default function MudarSenha({ navigation }) {
             <Title>
                 Nova Senha
             </Title>
+            
             <Text mt={5} style={{ textAlign: 'justify' }}>
                 Você fez login com uma senha temporária fornecida por um administrador.
                 Vamos muda-la para uma de sua preferencia.
@@ -61,7 +62,26 @@ export default function MudarSenha({ navigation }) {
                     onChangeText={(texto) => setConfirmacaoSenha(texto)}
                 />
             </Box>
-            <Botao onPress={alterarSenha}>Entrar</Botao>
+
+            <Botao
+                children={'Confirmar'}
+                autoSize={true}
+                bgColor={'#FFF'}
+                ftColor={'#2D3DCE'}
+                style={{
+                    borderColor: '#2D3DCE',
+                    borderWidth: 3,
+                    borderRadius: 50,
+                    overflow: 'hidden',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 5,
+                }}
+                w={'95%'}
+                onPress={alterarSenha}
+            >
+            </Botao>
 
             <Alerta
                 mensagem={mensagem}

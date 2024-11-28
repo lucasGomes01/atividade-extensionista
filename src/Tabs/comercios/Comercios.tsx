@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { detectarAtualizacaoDocumento, excluirComercio, retornarListaComercios } from "../../services/firestore";
 
 import { CardListagem } from "../../components/CardListagem";
-import imgPadrao from '../../assets/upload.jpeg';
+import imgPadrao from '../../assets/upload.png';
 export default function Comercios({ navigation }) {
     const [comercios, setComercios] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -26,9 +26,9 @@ export default function Comercios({ navigation }) {
                     text: "Cancelar",
                     style: "cancel"
                 },
-                { 
-                    text: "Sim", 
-                    onPress: async () => { 
+                {
+                    text: "Sim",
+                    onPress: async () => {
                         await excluirComercio(dados.id);
                     },
                     style: "default"
@@ -36,8 +36,8 @@ export default function Comercios({ navigation }) {
             ]
         );
     }
-    
-    useEffect(() => { 
+
+    useEffect(() => {
         listarDadosComericios();
         detectarAtualizacaoDocumento('comercios', setComercios);
     }, []);
@@ -54,7 +54,10 @@ export default function Comercios({ navigation }) {
             }
         >
             <VStack flex={1} alignItems="flex-end" p={5}>
-                <Button onPress={() => navigation.navigate('CadastroComercio')}>Adicionar</Button>
+                <Button
+                    backgroundColor={"#2D3DCE"}
+                    onPress={() => navigation.navigate('CadastroComercio')}>Adicionar
+                </Button>
                 <VStack w="100%" >
                     {
                         comercios?.map((comercio) => {

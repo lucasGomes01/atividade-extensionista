@@ -28,7 +28,7 @@ export default function Login({ navigation }) {
     if (uid) {
       const dadosUsuario = await recuperarDadosUsuario(uid);
 
-      if(dadosUsuario["mudarSenha"])
+      if (dadosUsuario["mudarSenha"])
         navigation.navigate('MudarSenha')
       else
         navigation.navigate('Tabs')
@@ -58,7 +58,7 @@ export default function Login({ navigation }) {
       <Title>
         Área Restrita
       </Title>
-      <Text mt={10} style={{ textAlign: 'justify' }}>
+      <Text mt={5} style={{ textAlign: 'justify' }}>
         Para realizar novos cadastros, é necessário ser um administrador.
         Se deseja cadastrar sua loja ou tornar-se um administrador, entre em contato conosco!
         Estamos à disposição para ajudar.
@@ -67,12 +67,13 @@ export default function Login({ navigation }) {
       <Box
         w={'100%'}
         mt={6}
-        p={2}
+        pl={2}
+        pr={2}
       >
         <Text>Contato: suporte.login@gmail.com.br</Text>
       </Box>
 
-      <Box mt={16}>
+      <Box pl={2} pr={2}>
         <EntradaTexto
           label="Email"
           placeholder="Insira seu endereço de e-mail"
@@ -87,7 +88,25 @@ export default function Login({ navigation }) {
         />
       </Box>
 
-      <Botao onPress={() => signInWithEmailAndPassword()}>Entrar</Botao>
+      <Botao
+        children={'Entrar'}
+        autoSize={true}
+        bgColor={'#FFF'}
+        ftColor={'#2D3DCE'}
+        style={{
+          borderColor: '#2D3DCE',
+          borderWidth: 3,
+          borderRadius: 50,
+          overflow: 'hidden',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+          shadowRadius: 5,
+        }}
+        w={'95%'}
+        onPress={() => signInWithEmailAndPassword()}
+      >
+      </Botao>
     </VStack>
   );
 }

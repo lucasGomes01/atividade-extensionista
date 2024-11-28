@@ -7,10 +7,10 @@ const Tab = createMaterialTopTabNavigator();
 
 const screenOptions = {
     tabBarStyle: {
-        backgroundColor: "#002851"
+        backgroundColor: "#2D3DCE"
     },
-    tabBarActiveTintColor: "#339cff",
-    tabBarInactiveTintColor: "#fff",
+    tabBarActiveTintColor: "#FFFFFF",
+    tabBarInactiveTintColor: "#BFBFBF",
 }
 
 const tabs = [

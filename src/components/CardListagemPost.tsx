@@ -1,7 +1,7 @@
 import { Text, VStack, HStack, Box, Image } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import imagemPadrao from '../assets/upload.jpeg';
+import imagemPadrao from '../assets/upload.png';
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 

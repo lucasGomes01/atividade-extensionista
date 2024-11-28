@@ -12,9 +12,8 @@ import { formCadastro } from '../../utils/formCadastro';
 import { createUser } from '../../services/auth';
 import { salvarUsuario } from '../../services/firestore';
 
-
 export default function Cadastro({ navigation, route }) {
-  const [data, setData] = useState(route?.params || {});  
+  const [data, setData] = useState(route?.params || {});
   const [blExibirCadastro, setExibirCadastro] = useState(true);
   const [statusError, setStatusError] = useState(false);
   const [mensagem, setMensagem] = useState('');
@@ -78,15 +77,14 @@ export default function Cadastro({ navigation, route }) {
     <ScrollView flex={1} p={5}>
       <Title>Novo Administrador</Title>
 
-      <Text mt={5}>
-        Por favor, informe o e-mail do usuário que deseja cadastrar. Uma
-        senha temporária será gerada após a solicitação. Após isso, copie
-        e envie a senha ao usuário.
-      </Text>
-
       <Box mt={5}>
         {blExibirCadastro ? (
           <>
+            <Text mt={5}>
+              Por favor, informe o e-mail do usuário que deseja cadastrar. Uma
+              senha temporária será gerada após a solicitação. Após isso, copie
+              e envie a senha ao usuário.
+            </Text>
             {formCadastro[0].entradaTexto.map((entrada) => (
               entrada.visible !== false && (
                 <EntradaTexto
@@ -99,8 +97,24 @@ export default function Cadastro({ navigation, route }) {
               )
             ))}
 
-            <Botao onPress={cadastrarUsuario} bgColor={"blue.800"} mt={4}>
-              Cadastrar
+            <Botao
+              children={'Salvar'}
+              autoSize={true}
+              bgColor={'#FFF'}
+              ftColor={'#2D3DCE'}
+              style={{
+                borderColor: '#2D3DCE',
+                borderWidth: 3,
+                borderRadius: 50,
+                overflow: 'hidden',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 5,
+              }}
+              w={'95%'}
+              onPress={cadastrarUsuario}
+            >
             </Botao>
           </>
         ) : (
@@ -114,10 +128,23 @@ export default function Cadastro({ navigation, route }) {
             />
 
             <Botao
+              children={'Copiar'}
+              autoSize={true}
+              bgColor={'#FFF'}
+              ftColor={'#2D3DCE'}
+              style={{
+                borderColor: '#2D3DCE',
+                borderWidth: 3,
+                borderRadius: 50,
+                overflow: 'hidden',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 5,
+              }}
+              w={'95%'}
               onPress={copiarParaClipboard}
-              bgColor={"blue.600"} mt={4}
             >
-              Copiar
             </Botao>
           </>
         )}
