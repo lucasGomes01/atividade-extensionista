@@ -1,6 +1,6 @@
-exemplo .env:
+Como rodar o projeto:
 
-    Crediencial copiada do firebase:
+no arquivo .env adicionar credencial copiada do firebase:
         API_KEY=
         AUTH_DOMAIN=
         PROJECT_ID=
