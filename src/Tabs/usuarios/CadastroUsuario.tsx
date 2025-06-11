@@ -34,8 +34,8 @@ export default function Cadastro({ navigation, route }) {
   }
 
   async function cadastrarUsuario() {
-    const lstOpcionais = formCadastro[0].entradaTexto.filter(item => item.opcional == true && item.visible == false).map(item => item.value);
-    console.log(lstOpcionais);
+    const lstOpcionais = formCadastro[0].entradaTexto.filter(item => item.opcional == true).map(item => item.value);
+
     const isEmpty = Object.entries(data).some(([key, value]) => value === '' && !lstOpcionais.includes(key));
 
     if (isEmpty) {
@@ -44,27 +44,38 @@ export default function Cadastro({ navigation, route }) {
       return;
     }
 
-    let senha = '';
-    while (senha.length < 6) {
-      senha += Math.random().toString(36).substring(2);
-    }
+    const usuarioAntigo = !!route?.params?.id;
 
-    data["senha"] = senha.substring(0, 6);
+    if (!usuarioAntigo) {
+      let senha = '';
 
-    const createUserResult = !!!route?.params?.id ? await createUser(data["email"], data["senha"]) : { success: true };
+      while (senha.length < 6) {
+        senha += Math.random().toString(36).substring(2);
+      }
 
-    if (createUserResult.success) {
-      const result = await salvarUsuario(route?.params?.id, { email: data["email"], nome: data["nome"], uid: createUserResult.uid || data["uid"], mudarSenha: true });
+      data["senha"] = senha.substring(0, 6);
 
-      if (result === 'ok') {
-        setExibirCadastro(false);
-        console.log('Usuario cadastrado com sucesso');
-        //navigation.goBack();
+      try {
+        const createUserResult = await createUser(data["email"], data["senha"]);
+        const result = await salvarUsuario(route?.params?.id, { email: data["email"], nome: data["nome"], uid: createUserResult.uid || data["uid"], mudarSenha: true });
+
+        if (result === 'ok') {
+          setExibirCadastro(false);
+          console.log('Usuario cadastrado com sucesso');
+        }
+      } catch (error) {
+        setStatusError(true);
+        setMensagem(error || 'Erro ao cadastrar usuario');
       }
     }
     else {
-      setStatusError(true);
-      setMensagem(createUserResult.error || 'Erro ao cadastrar usuario');
+      try {
+        await salvarUsuario(route?.params?.id, { email: data["email"], nome: data["nome"], uid: data["uid"], mudarSenha: data["mudarSenha"] });
+        navigation.navigate('Tabs', { screen: 'Usuarios' });
+      } catch (error) {
+        setStatusError(true);
+        setMensagem(error || 'Erro ao atualizar usuario');
+      }
     }
   }
 
@@ -85,17 +96,20 @@ export default function Cadastro({ navigation, route }) {
               senha temporária será gerada após a solicitação. Após isso, copie
               e envie a senha ao usuário.
             </Text>
-            {formCadastro[0].entradaTexto.map((entrada) => (
-              entrada.visible !== false && (
+
+            {formCadastro[0].entradaTexto.map((entrada) => {
+              if (entrada.visible === false) return null;
+
+              return (
                 <EntradaTexto
-                  label={entrada.label}
-                  placeholder={entrada.placeholder}
+                  {...entrada}
+                  data={data}
                   key={entrada.id}
                   value={data[entrada.value]}
                   onChangeText={texto => setValue(texto, entrada.value)}
                 />
-              )
-            ))}
+              );
+            })}
 
             <Botao
               children={'Salvar'}
@@ -122,6 +136,7 @@ export default function Cadastro({ navigation, route }) {
             <Text>Por favor, copie e envie a senha para o usuário</Text>
 
             <EntradaTexto
+              key={'1'}
               label="Senha Temporária"
               placeholder="Senha Temporária"
               value={data["senha"]}

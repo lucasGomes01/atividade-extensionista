@@ -12,6 +12,7 @@ import Listagem from "./Listagem";
 import Login from "./Login";
 import Tabs from "./Tabs/Index";
 import MudarSenha from "./MudarSenha";
+import { logoutUser } from "./services/auth";
 
 const Tab = createNativeStackNavigator();
 
@@ -60,6 +61,16 @@ function optionsTabs({ navigation }) {
                     size={30}
                     style={{ marginRight:30 }}
                     onPress={() => navigation.replace('Listagem')}
+                />
+            </Box>
+        ),
+        headerRight: () => (
+            <Box>
+                <Ionicons
+                    name={"log-out-outline"}
+                    color={"white"}
+                    size={30}
+                    onPress={() => logoutUser(navigation)}
                 />
             </Box>
         )

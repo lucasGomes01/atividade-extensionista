@@ -18,16 +18,19 @@ export default function MudarSenha({ navigation }) {
         if (senha !== confirmacaoSenha) {
             setStatusError(true);
             setMensagem('As senhas não correspondem. Verifique e tente novamente.');
+            return;
         }
 
         if (senha == "") {
             setStatusError(true);
             setMensagem('Digite a nova senha antes de prosseguir.');
+            return;
         }
 
         if (senha.length < 6) {
             setStatusError(true);
             setMensagem('A senha deve ter pelo menos 6 caracteres.');
+            return;
         }
 
         const resultado = await updatePasswordInApp(senha);

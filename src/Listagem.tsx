@@ -7,6 +7,7 @@ import { CardListagemPost } from "./components/CardListagemPost";
 import { Text } from "react-native";
 import { BarraPesquisa } from "./components/BarraPesquisa";
 import { BarraCategorias } from "./components/BarraCategorias";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Listagem({ navigation }) {
     const [categoriasSelecionadas, setcategoriasSelecionadas] = useState([]);
@@ -38,6 +39,31 @@ export default function Listagem({ navigation }) {
 
         setcategoriasSelecionadas(categorias);
         await listarDadosComercios(filtro, categorias);
+    }
+
+    async function signIn() {
+        const dadosUsuario = await getCachedUser();
+
+        if (dadosUsuario)
+            navigation.replace('Tabs');
+        else
+            navigation.navigate('Login');
+    };
+
+    async function getCachedUser() {
+        try {
+            const userData = await AsyncStorage.getItem('@userData');
+            if (userData !== null) {
+                const user = JSON.parse(userData);
+                console.log("Dados do usuário recuperados do cache:", user);
+                return user;
+            } else {
+                console.log("Nenhum dado de usuário no cache.");
+                return null;
+            }
+        } catch (error) {
+            console.error("Erro ao recuperar dados do usuário:", error.message);
+        }
     }
 
     useEffect(() => {
@@ -78,11 +104,11 @@ export default function Listagem({ navigation }) {
                         );
                     })
                 ) : (
-                    blDadosNaoEcontrador ? <Text >Não foi possível encontrar resultados para a busca</Text> :  <Text>Carregando...</Text> 
+                    blDadosNaoEcontrador ? <Text >Não foi possível encontrar resultados para a busca</Text> : <Text>Carregando...</Text>
                 )}
             </ScrollView>
 
-            <BotaoCadastro onPress={() => { navigation.navigate('Login') }} />
+            <BotaoCadastro onPress={signIn} />
         </VStack>
     )
 }

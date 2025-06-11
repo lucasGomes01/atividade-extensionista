@@ -35,6 +35,15 @@ export function CardListagemPost({
         setExpand(!expand);
     };
 
+    function timestampToHour(timestamp: { seconds: number, nanoseconds: number }): string {
+        const data = new Date(timestamp.seconds * 1000); // Converte segundos para milissegundos
+        return data.toLocaleTimeString('pt-BR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+        });
+    }
+
     return (
         <TouchableOpacity onPress={handleExpand}>
             <Box
@@ -59,27 +68,22 @@ export function CardListagemPost({
                     <Text bold fontSize="lg">{nome}</Text>
                     <HStack space={5}>
                         <StarRating rating={dados.PontuacaoGoogle || 1} />
-                        <Text color="gray.500" fontSize={9.4}>Hoje: {dados.horario || "18:00 - 22:30"}</Text>
+                        <Text color="gray.500" fontSize={9.4}>Hoje: {(dados.HorarioAbertura && timestampToHour(dados.HorarioAbertura)) + " - " + (dados.HorarioFechamento && timestampToHour(dados.HorarioFechamento))}</Text>
                     </HStack>
                     <Text fontSize={8}>Telefone: {dados.telefone1 + (dados.telefone2 ? " / " + dados.telefone2 : "")}</Text>
-                    <Text paddingTop={1} fontSize={8}>{dados.envio || "Delivery"}</Text>
+                    <Text paddingTop={1} fontSize={8}>{[dados.Balcao && 'Balcão', dados.Delivery && 'Delivery'].filter(Boolean).join(' / ')}</Text>
                     <Text paddingTop={1} fontSize={8} height={65}>{dados.descricao}</Text>
                     {
                         expand && (
-                            <Text paddingTop={1} fontSize={10} ><Icon name="facebook" size={10} color="#000" /> Teste</Text>
+                            <Text paddingTop={1} fontSize={10} ><Icon name="facebook" size={10} color="#000" /> {dados.facebook}</Text>
                         )
                     }
                     {
                         expand && (
-                            <Text fontSize={10} ><Icon name="instagram" size={10} color="#000" /> Teste</Text>
+                            <Text fontSize={10} ><Icon name="instagram" size={10} color="#000" /> {dados.instagram}</Text>
                         )
                     }
-                    {
-                        expand && (
-                            <Text fontSize={10} ><Icon name="whatsapp" size={10} color="#000" /> Teste</Text>
-                        )
-                    }
-                    <Text paddingTop={2} fontSize={8}>{dados.endereco || "Barra Bonita sp, Avenida Pedro Ometto, N° 021 - Centro"}</Text>
+                    <Text paddingTop={1} fontSize={8}>{dados.endereco || "Barra Bonita sp, Avenida Pedro Ometto, N° 021 - Centro"}</Text>
                 </VStack>
             </Box>
         </TouchableOpacity>

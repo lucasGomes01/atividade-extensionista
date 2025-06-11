@@ -16,7 +16,12 @@ const formCadastro = [{
       value: 'email',
       placeholder: 'Digite o email',
       opcional: false,
-      visible: true
+      visible: true,
+      condicaoBloqueio: "data['uid'] != '' && key == 2",
+      contextoBloqueio: (data) => ({
+        data,
+        key: 2
+      }),
     },
     {
       id: 3,
@@ -35,6 +40,20 @@ const formCadastro = [{
       secureTextEntry: true,
       opcional: true,
       visible: false
+    },
+    {
+      id: 5,
+      label: 'Mudar Senha?',
+      value: 'mudarSenha',
+      placeholder: '',
+      opcional: true,
+      visible: true,
+      type: 'checkbox',
+      condicaoBloqueio: "data['uid'] === '' && key == 5",
+      contextoBloqueio: (data) => ({
+        data,
+        key: 5
+      }),
     }
   ],
   checkbox: []
@@ -48,7 +67,8 @@ const formCadastro = [{
       label: 'Url da imagem',
       value: 'urlImagem',
       placeholder: 'Url da imagem',
-      opcional: true
+      opcional: true,
+      visible: false,
     },
     {
       id: 2,
@@ -69,7 +89,8 @@ const formCadastro = [{
       label: 'Telefone 1',
       value: 'telefone1',
       placeholder: 'telefone',
-      opcional: false
+      opcional: false,
+      type: 'phone'
     },
     {
       id: 5,
@@ -77,7 +98,8 @@ const formCadastro = [{
       value: 'telefone2',
       placeholder: 'telefone 2',
       opcional: true,
-      visible: true
+      visible: true,
+      type: 'phone'
     },
     {
       id: 6,
@@ -103,7 +125,8 @@ const formCadastro = [{
       value: 'PontuacaoGoogle',
       placeholder: 'Pontuação no google 0 - 5',
       opcional: true,
-      visible: true
+      visible: true,
+      type: 'numeric'
     },
     {
       id: 9,
@@ -122,6 +145,40 @@ const formCadastro = [{
       visible: true,
       type: 'combox',
       colecao: "categoriaComercio"
+    },
+    {
+      id: 11,
+      label: 'facebook',
+      value: 'facebook',
+      placeholder: 'facebook',
+      opcional: true,
+      visible: true
+    },
+    {
+      id: 12,
+      label: 'instagram',
+      value: 'instagram',
+      placeholder: 'instagram',
+      opcional: true,
+      visible: true
+    },
+    {
+      id: 13,
+      label: 'Delivery',
+      value: 'Delivery',
+      placeholder: '',
+      opcional: true,
+      visible: true,
+      type: 'checkbox'
+    },
+    {
+      id: 14,
+      label: 'Balcão',
+      value: 'Balcao',
+      placeholder: '',
+      opcional: true,
+      visible: true,
+      type: 'checkbox'
     }
   ],
   checkbox: []

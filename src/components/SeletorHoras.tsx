@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { View, Platform, Text, TouchableOpacity, Keyboard } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Timestamp } from 'firebase/firestore';
 
 interface SeletorHorasProps {
     onHourChange: (hour: Date) => void;
-    value: Date;
+    value: Timestamp;
 }
 
 export function SeletorHoras({
     onHourChange,
     value
 }: SeletorHorasProps) {
-    const [date, setDate] = useState(new Date(value ? value["seconds"] * 1000 : Date.now()));
+    const [date, setDate] = useState(value || Timestamp.fromDate(new Date()));
     const [showPicker, setShowPicker] = useState(false);
 
     const handleChange = (event: any, selectedDate?: Date) => {
         setShowPicker(Platform.OS === 'ios'); // Manter o picker aberto no iOS, não testado
         if (selectedDate) {
-            setDate(selectedDate);
+            setDate(Timestamp.fromDate(selectedDate));
             onHourChange(selectedDate);
             Keyboard.dismiss();
         }
@@ -26,6 +27,15 @@ export function SeletorHoras({
     const showTimePicker = () => {
         setShowPicker(true);
     };
+
+    function timestampToHour(timestamp: { seconds: number, nanoseconds: number }): string {
+        const data = new Date(timestamp.seconds * 1000);
+        return data.toLocaleTimeString('pt-BR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+        });
+    }
 
     return (
         <View>
@@ -49,12 +59,12 @@ export function SeletorHoras({
                         elevation: 6,
                     }}
                 >
-                    {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {timestampToHour(date)}
                 </Text>
             </TouchableOpacity>
             {showPicker && (
                 <DateTimePicker
-                    value={date}
+                    value={new Date(date.seconds * 1000)}
                     mode="time"
                     is24Hour={true}
                     display="default"

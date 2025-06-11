@@ -29,15 +29,18 @@ export function CardListagem({
                 {mostrarFoto &&
                     <Avatar size="md" source={{ uri: foto }} />
                 }
+
                 <VStack pl="4" flex={1}>
                     <Text fontSize="md" bold>{nome}</Text>
                     <Text>{data}</Text>
                 </VStack>
+
                 <TouchableOpacity
                     onPress={() => { navigation.navigate(nameNavegation, dados) }}
                 >
                     <Ionicons name={"create-outline"} size={23} color="blue" />
                 </TouchableOpacity>
+                
                 {excluirItem && (
                     <TouchableOpacity
                         onPress={() => { excluirItem() }}

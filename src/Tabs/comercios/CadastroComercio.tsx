@@ -94,16 +94,16 @@ export default function CadastroComercio({ navigation, route }) {
         </Title>
 
         <Text m={4}>
-          Faça o upload de uma foto de capa mostrando o que há de melhor.  
+          Faça o upload de uma foto de capa mostrando o que há de melhor.
         </Text>
 
         <TouchableOpacity
-          style={{ 
-            width: 190, 
-            height: 142, 
+          style={{
+            width: 190,
+            height: 142,
             marginRight: 23,
             alignSelf: 'center',
-           }}
+          }}
           onPress={selecionarImagemGaleria}
         >
           <Image
@@ -114,14 +114,13 @@ export default function CadastroComercio({ navigation, route }) {
 
         {
           formCadastro[1].entradaTexto.map((entrada) => {
+            if (entrada.visible === false) return null;
+            
             return <EntradaTexto
-              label={entrada.label}
-              placeholder={entrada.placeholder}
+              {...entrada}
+              data={data}
               key={entrada.id}
               value={data[entrada.value]}
-              type={entrada.type}
-              opcional={entrada?.opcional || false}
-              colecao={entrada.colecao}
               onChangeText={texto => setValue(texto, entrada.value)}
             />
           })

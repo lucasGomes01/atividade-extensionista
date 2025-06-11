@@ -1,3 +1,4 @@
+import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,6 +10,7 @@ import {
     sendPasswordResetEmail,
     updatePassword
 } from "firebase/auth";
+
 import { recuperarDadosUsuario, salvarUsuario } from './firestore';
 
 interface CreateUserResult {
@@ -17,6 +19,7 @@ interface CreateUserResult {
     email?: string;
     uid?: string;
 }
+
 
 function handleAuthError(error: any) {
     let message = '';
@@ -59,13 +62,13 @@ export async function loginUser(email: string, senha: string): Promise<string> {
         const dadosUsuario = await signInWithEmailAndPassword(auth, email, senha);
         const user = dadosUsuario.user;
 
-        // Salve os dados do usuário no AsyncStorage
+        // Salva os dados do usuário no AsyncStorage
         await AsyncStorage.setItem('@userData', JSON.stringify({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName
         }));
-        
+
         console.log("login", email, senha);
         //changePasswordByEmail(email);
         return user.uid;
@@ -73,6 +76,20 @@ export async function loginUser(email: string, senha: string): Promise<string> {
         console.log("Erro em LoginUser Email:", email, "Senha:", senha, "Erro:", error);
         return "";
     }
+}
+
+export async function logoutUser(navigation) {
+    signOut(auth)
+        .then(() => {
+            console.log('Deslogado com sucesso!');
+
+            AsyncStorage.removeItem('@userData');
+
+            navigation.navigate('Listagem');
+        })
+        .catch((error) => {
+            console.error('Erro ao deslogar:', error);
+        });
 }
 
 export async function changePasswordByEmail(email: string) {
@@ -91,8 +108,8 @@ export async function updatePasswordInApp(newPassword: string): Promise<string> 
             await updatePassword(user, newPassword);
 
             const dadosUsuario = await recuperarDadosUsuario(user.uid);
-            await salvarUsuario(dadosUsuario.id, {...dadosUsuario, mudarSenha: false});
-            
+            await salvarUsuario(dadosUsuario.id, { ...dadosUsuario, mudarSenha: false });
+
             return "Senha atualizada com sucesso."
         } catch (error) {
             console.error("Erro ao atualizar a senha:", error);

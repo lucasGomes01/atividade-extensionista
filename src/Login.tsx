@@ -1,28 +1,26 @@
-import { VStack, Text, Box, Link } from 'native-base';
+import { VStack, Text, Box } from 'native-base';
 import { recuperarDadosUsuario } from "./services/firestore";
 import { Title } from './components/Title';
 import { Botao } from './components/Botao';
 import { EntradaTexto } from './components/EntradaTexto';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { loginUser } from './services/auth';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alerta } from './components/Alerta';
 
 export default function Login({ navigation }) {
-  const [email, setEmail] = useState('teste.fffff@gmail.com');
-  const [senha, setSenha] = useState('ne46ks');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const dadosUsuario = await getCachedUser();
-
-      if (dadosUsuario)
-        navigation.navigate('Tabs');
-    };
-    fetchUserData();
-  }, []);
+  const [statusError, setStatusError] = useState(false);
+  const [mensagem, setMensagem] = useState('');
 
   async function signInWithEmailAndPassword() {
+    if (email === '' || senha === '') {
+      setStatusError(true);
+      setMensagem("Por favor, Informe seu email e senha");
+      return;
+    }
+
     const uid = await loginUser(email, senha);
 
     if (uid) {
@@ -33,23 +31,9 @@ export default function Login({ navigation }) {
       else
         navigation.navigate('Tabs')
     }
-  }
-
-  async function getCachedUser() {
-    //await AsyncStorage.clear();
-
-    try {
-      const userData = await AsyncStorage.getItem('@userData');
-      if (userData !== null) {
-        const user = JSON.parse(userData);
-        console.log("Dados do usuário recuperados do cache:", user);
-        return user;
-      } else {
-        console.log("Nenhum dado de usuário no cache.");
-        return null;
-      }
-    } catch (error) {
-      console.error("Erro ao recuperar dados do usuário:", error.message);
+    else {
+      setStatusError(true);
+      setMensagem("Email ou senha inválidos. Por favor, tente novamente.");
     }
   }
 
@@ -107,6 +91,12 @@ export default function Login({ navigation }) {
         onPress={() => signInWithEmailAndPassword()}
       >
       </Botao>
+
+      <Alerta
+        mensagem={mensagem}
+        error={statusError}
+        setError={setStatusError}
+      />
     </VStack>
   );
 }

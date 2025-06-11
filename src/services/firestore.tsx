@@ -3,6 +3,7 @@ import { collection, addDoc, getDocs, doc, updateDoc, serverTimestamp, deleteDoc
 
 // Cadastros
 export async function salvarComercio(comercioId: string, data: any): Promise<string> {
+    console.log(data);
     try {
         if (!!!comercioId) {
             await addDoc(collection(db, "comercios"), { ...data, user: auth.currentUser.uid, timestamp: serverTimestamp() });
@@ -66,6 +67,17 @@ export async function excluirComercio(comercioId: string) {
     }
 }
 
+export async function excluirUsuario(usuarioId: string) {
+    try {
+        await deleteDoc(doc(db, "users", usuarioId));
+
+        return 'ok';
+    } catch (error) {
+        console.log("Erro ao deletar o usuario:", error);
+        return false;
+    }
+}
+
 // Consultas
 export async function recuperarDadosUsuario(uid: string) {
     try {
@@ -73,7 +85,7 @@ export async function recuperarDadosUsuario(uid: string) {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-            return {id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
+            return { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
         } else {
             console.log("Nenhum usuário encontrado com esse UID");
             return null;
@@ -131,6 +143,7 @@ export async function retornarListaComercios(filtro?: string, categoriasId?: str
             let comercio = { id: doc.id, ...(doc.data() as object) };
             comercios.push(comercio);
         });
+
         return comercios;
     }
     catch (error) {
@@ -140,6 +153,11 @@ export async function retornarListaComercios(filtro?: string, categoriasId?: str
 }
 
 export async function retornarListaUsuarios() {
+    if (auth.currentUser.uid == "") {
+        console.log("Usuário não autenticado");
+        return [];
+    }
+
     try {
         const q = query(collection(db, "users"), orderBy("timestamp", "desc"));
         const querySnapshot = await getDocs(q);
@@ -160,18 +178,32 @@ export async function retornarListaUsuarios() {
 
 // Atualização em tempo real
 export async function detectarAtualizacaoDocumento(collectionName: string, setCollection: (items: any[]) => void) {
-    const q = query(collection(db, collectionName), orderBy("timestamp", "desc"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const items = [];
-        querySnapshot.forEach((doc) => {
-            items.push({ id: doc.id, ...doc.data() });
-        });
+    try {
+        const q = query(collection(db, collectionName), orderBy("timestamp", "desc"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const items = [];
+            querySnapshot.forEach((doc) => {
+                items.push({ id: doc.id, ...doc.data() });
+            });
 
-        setCollection(items);
-    });
+            setCollection(items);
+        });
+    } catch (error) {
+        console.error("Erro ao detectar atualizações:", error);
+    }
 }
 
 // Cargas iniciais
+function cadastroComercios() {
+    let dados = [
+      
+    ]
+
+    dados.forEach(async (item) => {
+        await salvarComercio('', item);
+    });
+}
+
 function cadastrarCategorias() {
     let dados = [
         {
@@ -202,3 +234,4 @@ function cadastrarCategorias() {
 }
 
 //cadastrarCategorias();
+//cadastroComercios()
